@@ -20,7 +20,7 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Reset Password Portal Sekolah");
-        message.setText("Klik link berikut untuk reset password Anda:\n" + resetUrl + "\n\nLink berlaku selama 1 jam.");
+        message.setText("Klik link berikut untuk reset password Anda:\n" + resetUrl + "\n\nLink berlaku selama 2 Menit.");
 
         mailSender.send(message);
     }
