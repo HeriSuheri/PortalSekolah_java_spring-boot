@@ -26,5 +26,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Filter user berdasarkan role
     List<User> findByRole(Role role);
+
     Page<User> findByRole(Role role, Pageable pageable);
+
+    // search tabel admin
+    Page<User> findByRoleAndNamaContainingIgnoreCase(Role role, String keyword, Pageable pageable);
+
+    Optional<User> findByEmail(String email);
+
 }

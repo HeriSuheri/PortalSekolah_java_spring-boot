@@ -8,16 +8,24 @@ import com.example.portal.mapper.UserMapper;
 import com.example.portal.model.Role;
 import com.example.portal.model.User;
 import com.example.portal.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -43,12 +51,31 @@ public class AdminServiceImpl implements AdminService {
         return userRepository.save(user);
     }
 
-    // get all admins
+    // get all admins: ga dipake
     @Override
     public List<UserResponseDTO> getAllAdmins() {
         return userRepository.findByRole(Role.ADMIN).stream()
                 .map(UserMapper::toDTO)
                 .toList();
+    }
+
+    // get all admin
+    @Override
+    public Map<String, Object> getAdmins(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<User> admins = userRepository.findByRole(Role.ADMIN, pageable);
+
+        List<UserResponseDTO> dtoList = admins.getContent().stream()
+                .map(UserMapper::toDTO)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", dtoList);
+        response.put("totalElements", admins.getTotalElements());
+        response.put("totalPages", admins.getTotalPages());
+        response.put("currentPage", admins.getNumber());
+
+        return response;
     }
 
     // update admin
@@ -92,6 +119,25 @@ public class AdminServiceImpl implements AdminService {
         }
 
         userRepository.delete(user);
+    }
+
+    // search admin
+    @Override
+    public Map<String, Object> searchAdmins(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Page<User> result = userRepository.findByRoleAndNamaContainingIgnoreCase(Role.ADMIN, keyword, pageable);
+
+        List<UserResponseDTO> dtoList = result.getContent().stream()
+                .map(UserMapper::toDTO)
+                .toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", dtoList);
+        response.put("totalElements", result.getTotalElements());
+        response.put("totalPages", result.getTotalPages());
+        response.put("currentPage", result.getNumber());
+
+        return response;
     }
 
 }

@@ -25,6 +25,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+        // String path = request.getServletPath();
+        // if (path.equals("/api/auth/forgot-password") || path.equals("/api/auth/reset-password")) {
+        //     filterChain.doFilter(request, response);
+        //     return;
+        // }
+
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
