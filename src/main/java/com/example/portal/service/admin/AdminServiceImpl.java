@@ -91,6 +91,12 @@ public class AdminServiceImpl implements AdminService {
             throw new IllegalArgumentException("User ini bukan admin");
         }
 
+        if (!user.getEmail().equalsIgnoreCase(request.getEmail()) &&
+                userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email sudah digunakan oleh user lain");
+        }
+       
+        user.setNomorInduk(request.getNomorInduk());
         user.setNama(request.getNama());
         user.setEmail(request.getEmail());
 

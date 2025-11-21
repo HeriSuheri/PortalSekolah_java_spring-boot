@@ -111,20 +111,27 @@ public class AdminController {
         return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari admin", response));
     }
 
-    @PutMapping("/{id}")
+    // @PutMapping("/{id}")
     // public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody
     // UpdateAdminRequest request) {
+    // public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody
+    // @Valid UpdateAdminRequest request) {
+    // try {
+    // adminService.updateAdmin(id, request);
+    // return ResponseEntity.ok(new ApiResponse(true, "Admin berhasil diperbarui"));
+    // } catch (ResourceNotFoundException e) {
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new
+    // ApiResponse(false, e.getMessage()));
+    // } catch (Exception e) {
+    // log.error("Gagal update admin", e);
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body(new ApiResponse(false, "Gagal update admin"));
+    // }
+    // }
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody @Valid UpdateAdminRequest request) {
-        try {
-            adminService.updateAdmin(id, request);
-            return ResponseEntity.ok(new ApiResponse(true, "Admin berhasil diperbarui"));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, e.getMessage()));
-        } catch (Exception e) {
-            log.error("Gagal update admin", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse(false, "Gagal update admin"));
-        }
+        adminService.updateAdmin(id, request);
+        return ResponseEntity.ok(new ApiResponse(true, "Admin berhasil diperbarui"));
     }
 
     @DeleteMapping("/{id}")

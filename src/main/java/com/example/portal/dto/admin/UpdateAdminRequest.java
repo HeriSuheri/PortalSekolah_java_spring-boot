@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class UpdateAdminRequest {
+    private String nomorInduk;
     private String nama;
     private String email;
     // private LocalDate tanggalLahir;

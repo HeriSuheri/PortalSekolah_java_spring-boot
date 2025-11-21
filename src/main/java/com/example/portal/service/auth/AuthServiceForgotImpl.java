@@ -46,6 +46,12 @@ public class AuthServiceForgotImpl implements AuthServiceForgot {
             throw new IllegalArgumentException("Email tidak cocok dengan Nomor Induk");
         }
 
+        // ⛔️ Tambahkan pengecekan password null di sini
+        if (user.getPassword() == null) {
+            throw new IllegalStateException(
+                    "Akun anda belum pernah membuat password. Untuk login, gunakan tanggal lahir sebagai password.");
+        }
+
         String token = UUID.randomUUID().toString();
 
         // Cek apakah token sudah ada untuk user ini
