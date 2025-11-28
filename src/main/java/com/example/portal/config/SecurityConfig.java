@@ -78,7 +78,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/forgot-password").permitAll()
                         .requestMatchers("/api/auth/reset-password").permitAll()
                         .requestMatchers("/uploads/**").permitAll() // ⬅️ ini penting!
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        // Guru endpoints
+                        .requestMatchers(HttpMethod.GET, "/api/guru/**").hasAnyRole("ADMIN", "GURU") // admin/guru
+                        .requestMatchers(HttpMethod.POST, "/api/guru/**").hasRole("ADMIN") // create hanya admin
+                        .requestMatchers(HttpMethod.PUT, "/api/guru/**").hasRole("ADMIN") // update hanya admin
+                        .requestMatchers(HttpMethod.DELETE, "/api/guru/**").hasRole("ADMIN")
+                        // .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users/roles").hasAnyRole("ADMIN", "GURU") 
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
