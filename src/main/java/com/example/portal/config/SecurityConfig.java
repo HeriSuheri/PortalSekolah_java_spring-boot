@@ -84,8 +84,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/guru/**").hasRole("ADMIN") // update hanya admin
                         .requestMatchers(HttpMethod.DELETE, "/api/guru/**").hasRole("ADMIN")
                         // .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/users/roles").hasAnyRole("ADMIN", "GURU") 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // .requestMatchers(HttpMethod.GET, "/api/users/roles").hasAnyRole("ADMIN", "GURU") 
+                        // .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable());

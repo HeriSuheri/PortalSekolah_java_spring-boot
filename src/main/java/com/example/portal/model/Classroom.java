@@ -10,14 +10,16 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // e.g. "10A", "11B"
+    @Column(nullable = false, unique = true, length = 255)
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "grade_level_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grade_level_id", nullable = false)
     private GradeLevel gradeLevel;
 
     // Constructors
-    public Classroom() {}
+    public Classroom() {
+    }
 
     public Classroom(String name, GradeLevel gradeLevel) {
         this.name = name;
