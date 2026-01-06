@@ -1,5 +1,7 @@
 package com.example.portal.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,9 +15,19 @@ public class Classroom {
     @Column(nullable = false, unique = true, length = 255)
     private String name;
 
+    // Relasi ke grade level
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grade_level_id", nullable = false)
     private GradeLevel gradeLevel;
+
+    // 🔑 Wali kelas (FK ke guru)
+    @OneToOne
+    @JoinColumn(name = "wali_guru_id")
+    private Guru waliGuru;
+
+    // Relasi ke siswa (FK classroom_id di tabel siswa)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Siswa> siswaList = new ArrayList<>();
 
     // Constructors
     public Classroom() {
@@ -49,5 +61,21 @@ public class Classroom {
 
     public void setGradeLevel(GradeLevel gradeLevel) {
         this.gradeLevel = gradeLevel;
+    }
+
+    public Guru getWaliGuru() {
+        return waliGuru;
+    }
+
+    public void setWaliGuru(Guru waliGuru) {
+        this.waliGuru = waliGuru;
+    }
+
+    public List<Siswa> getSiswaList() {
+        return siswaList;
+    }
+
+    public void setSiswaList(List<Siswa> siswaList) {
+        this.siswaList = siswaList;
     }
 }

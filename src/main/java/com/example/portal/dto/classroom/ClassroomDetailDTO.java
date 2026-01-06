@@ -1,14 +1,19 @@
 package com.example.portal.dto.classroom;
 
-public class ClassroomDTO {
+import com.example.portal.dto.siswa.SiswaDTO;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+public class ClassroomDetailDTO {
     private Long id;
     private String name;
     private Long gradeLevelId;
     private String gradeLevelName;
-
     private Long waliGuruId;
     private String waliGuruName;
-    private String waliGuruNip;
+    // private List<SiswaDTO> siswa;
+    private Page<SiswaDTO> siswa;
 
     public void setId(Long id) {
         this.id = id;
@@ -38,16 +43,16 @@ public class ClassroomDTO {
         this.gradeLevelName = gradeLevelName;
     }
 
-    public String getGradeLevelName() {
-        return gradeLevelName;
-    }
-
     public void setWaliGuruId(Long waliGuruId) {
         this.waliGuruId = waliGuruId;
     }
 
     public Long getWaliGuruId() {
         return waliGuruId;
+    }
+
+    public String getGradeLevelName() {
+        return gradeLevelName;
     }
 
     public void setWaliGuruName(String waliGuruName) {
@@ -58,12 +63,22 @@ public class ClassroomDTO {
         return waliGuruName;
     }
 
-    public void setWaliGuruNip(String waliGuruNip) {
-        this.waliGuruNip = waliGuruNip;
+    // public void setSiswa(List<SiswaDTO> siswa) {
+    // this.siswa = siswa;
+    // }
+    // public void setSiswa(Page<SiswaDTO> siswa) {
+    // this.siswa = siswa;
+    // }
+
+    // public List<SiswaDTO> getSiswa() {
+    // return siswa;
+    // }
+    public Page<SiswaDTO> getSiswa() {
+        return siswa;
     }
 
-    public String getWaliGuruNip() {
-        return waliGuruNip;
+    public void setSiswa(Page<SiswaDTO> siswa) {
+        this.siswa = siswa;
     }
 
 }

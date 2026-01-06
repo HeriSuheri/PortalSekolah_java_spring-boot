@@ -12,6 +12,16 @@ public class CreateClassroomRequest {
     @NotNull
     private Long gradeLevelId;
 
+    private Long waliGuruId;
+
+    public void setWaliGuruId(Long waliGuruId) {
+        this.waliGuruId = waliGuruId;
+    }
+
+    public Long getWaliGuruId() {
+        return waliGuruId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

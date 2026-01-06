@@ -181,4 +181,17 @@ public class GuruServiceImpl implements GuruService {
 
         return response;
     }
+
+    // public List<GuruDTO> getAllGurus() {
+    //     return guruRepository.findAll()
+    //             .stream()
+    //             .map(guru -> {
+    //                 GuruDTO dto = new GuruDTO();
+    //                 dto.setId(guru.getId());
+    //                 dto.setNip(guru.getNip());
+    //                 dto.setNama(guru.getNama());
+    //                 return dto;
+    //             })
+    //             .toList();
+    // }
 }

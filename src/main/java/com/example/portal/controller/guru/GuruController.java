@@ -62,4 +62,10 @@ public class GuruController {
         return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari admin", response));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAllGurus() {
+        List<GuruDTO> response = guruService.getAllGuru();
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil semua guru", response));
+    }
+
 }
