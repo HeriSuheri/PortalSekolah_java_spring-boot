@@ -58,6 +58,7 @@ public class ClassroomMapper {
         if (classroom.getWaliGuru() != null) {
             dto.setWaliGuruId(classroom.getWaliGuru().getId());
             dto.setWaliGuruName(classroom.getWaliGuru().getNama());
+            dto.setWaliGuruNip(classroom.getWaliGuru().getNip());
         }
 
         dto.setSiswa(siswaPage); // field di DTO harus Page<SiswaDTO>

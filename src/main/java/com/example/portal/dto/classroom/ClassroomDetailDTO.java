@@ -14,6 +14,7 @@ public class ClassroomDetailDTO {
     private String waliGuruName;
     // private List<SiswaDTO> siswa;
     private Page<SiswaDTO> siswa;
+    private String waliGuruNip;
 
     public void setId(Long id) {
         this.id = id;
@@ -79,6 +80,14 @@ public class ClassroomDetailDTO {
 
     public void setSiswa(Page<SiswaDTO> siswa) {
         this.siswa = siswa;
+    }
+
+    public void setWaliGuruNip(String waliGuruNip) {
+        this.waliGuruNip = waliGuruNip;
+    }
+
+    public String getWaliGuruNip() {
+        return waliGuruNip;
     }
 
 }
