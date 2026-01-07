@@ -107,6 +107,15 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException("Classroom tidak ditemukan"));
     }
 
+    // get all classroom
+    @Override
+    public List<ClassroomDTO> getAll() {
+        return classroomRepo.findAll().stream()
+                .map(ClassroomMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // get classroom with paging
     @Override
     public Page<ClassroomDTO> search(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
@@ -127,6 +136,8 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     // return ClassroomMapper.toDetailDTO(classroom, siswaList);
     // }
+
+    // detail classromm: CRUD siswa, info siswa - wali kelas, dll
     @Override
     public ClassroomDetailDTO getClassroomDetail(Long id, String keyword, int page, int size) {
         Classroom classroom = classroomRepo.findById(id)

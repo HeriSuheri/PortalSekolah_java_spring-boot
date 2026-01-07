@@ -91,7 +91,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.PUT, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.DELETE, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
-                        .requestMatchers(HttpMethod.GET, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
+                        .requestMatchers(HttpMethod.GET, "/api/siswa/**").hasAnyRole("ADMIN", "GURU","SISWA")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable());

@@ -4,6 +4,9 @@ import com.example.portal.dto.classroom.ClassroomDTO;
 import com.example.portal.dto.classroom.ClassroomDetailDTO;
 import com.example.portal.dto.classroom.CreateClassroomRequest;
 import com.example.portal.dto.classroom.UpdateClassroomRequest;
+import com.example.portal.dto.siswa.SiswaDTO;
+
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 
@@ -15,6 +18,8 @@ public interface ClassroomService {
     void delete(Long id);
 
     ClassroomDTO getById(Long id);
+
+    List<ClassroomDTO> getAll();
 
     Page<ClassroomDTO> search(String keyword, int page, int size);
 

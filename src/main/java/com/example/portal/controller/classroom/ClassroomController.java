@@ -12,6 +12,7 @@ import com.example.portal.service.classroom.ClassroomService;
 import jakarta.validation.Valid;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -57,7 +58,14 @@ public class ClassroomController {
         return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil classroom", dto));
     }
 
-    // GET
+    // get all no paging
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAll() {
+        List<ClassroomDTO> data = classroomService.getAll();
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil semua classroom", data));
+    }
+
+    // GET with paging
     @GetMapping
     public ResponseEntity<ApiResponse> getClassrooms(
             @RequestParam(defaultValue = "0") int page,
