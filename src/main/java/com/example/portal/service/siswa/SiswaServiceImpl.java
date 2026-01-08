@@ -45,11 +45,9 @@ public class SiswaServiceImpl implements SiswaService {
         if (siswaRepo.existsByNis(request.getNis())) {
             throw new IllegalArgumentException("NIS sudah digunakan");
         }
-
         if (userRepo.existsByNomorInduk(request.getNis())) {
             throw new IllegalArgumentException("Nomor Induk sudah digunakan di User");
         }
-
         if (userRepo.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email sudah digunakan di User");
         }
@@ -57,11 +55,11 @@ public class SiswaServiceImpl implements SiswaService {
         // Buat akun User untuk siswa
         User user = new User();
         user.setNomorInduk(request.getNis());
-        user.setTanggalLahir(request.getTanggalLahir());
+        user.setTanggalLahir(request.getTanggalLahir()); // ✅ sinkron tanggal lahir
         user.setPassword(null); // first login pakai tanggal lahir
         user.setRole(Role.SISWA);
-        user.setNama(request.getNama());
-        user.setEmail(request.getEmail());
+        user.setNama(request.getNama()); // ✅ sinkron nama
+        user.setEmail(request.getEmail()); // ✅ sinkron email
         userRepo.save(user);
 
         // Ambil classroom
@@ -72,7 +70,7 @@ public class SiswaServiceImpl implements SiswaService {
         Siswa siswa = new Siswa();
         siswa.setNis(request.getNis());
         siswa.setNama(request.getNama());
-        siswa.setTanggalLahir(request.getTanggalLahir());
+        siswa.setTanggalLahir(request.getTanggalLahir()); // ✅ sama dengan user
         siswa.setAlamat(request.getAlamat());
         siswa.setNamaAyah(request.getNamaAyah());
         siswa.setNamaIbu(request.getNamaIbu());
@@ -90,6 +88,7 @@ public class SiswaServiceImpl implements SiswaService {
         Siswa siswa = siswaRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
 
+        // update field siswa
         siswa.setNama(request.getNama());
         siswa.setTanggalLahir(request.getTanggalLahir());
         siswa.setAlamat(request.getAlamat());
@@ -114,8 +113,8 @@ public class SiswaServiceImpl implements SiswaService {
             siswa.getUser().setNomorInduk(request.getNis());
         }
 
+        User user = siswa.getUser();
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
-            User user = siswa.getUser();
             if (userRepo.existsByEmail(request.getEmail()) &&
                     !user.getEmail().equals(request.getEmail())) {
                 throw new IllegalArgumentException("Email sudah digunakan di User");
@@ -123,8 +122,9 @@ public class SiswaServiceImpl implements SiswaService {
             user.setEmail(request.getEmail());
         }
 
-        // sinkron nama di user juga
-        siswa.getUser().setNama(request.getNama());
+        // ✅ sinkron nama dan tanggal lahir di user juga
+        user.setNama(request.getNama());
+        user.setTanggalLahir(request.getTanggalLahir());
 
         return SiswaMapper.toDTO(siswaRepo.save(siswa));
     }
