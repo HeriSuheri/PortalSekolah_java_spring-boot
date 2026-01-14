@@ -78,6 +78,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/forgot-password").permitAll()
                         .requestMatchers("/api/auth/reset-password").permitAll()
                         .requestMatchers("/uploads/**").permitAll() // ⬅️ ini penting!
+                        .requestMatchers(HttpMethod.POST, "/api/ppdb/register").permitAll() // calon siswa daftar
+                        .requestMatchers(HttpMethod.GET, "/api/ppdb/**").permitAll() // cek status tanpa login
+                        .requestMatchers(HttpMethod.PUT, "/api/ppdb/**").hasRole("ADMIN")
                         // Guru endpoints
                         .requestMatchers(HttpMethod.GET, "/api/guru/**").hasAnyRole("ADMIN", "GURU", "SISWA") // admin/guru
                         .requestMatchers(HttpMethod.POST, "/api/guru/**").hasRole("ADMIN") // create hanya admin
@@ -91,7 +94,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.PUT, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.DELETE, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
-                        .requestMatchers(HttpMethod.GET, "/api/siswa/**").hasAnyRole("ADMIN", "GURU","SISWA")
+                        .requestMatchers(HttpMethod.GET, "/api/siswa/**").hasAnyRole("ADMIN", "GURU", "SISWA")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable());

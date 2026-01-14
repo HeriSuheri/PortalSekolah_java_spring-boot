@@ -20,8 +20,23 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Reset Password Portal Sekolah");
-        message.setText("Klik link berikut untuk reset password Anda:\n" + resetUrl + "\n\nLink berlaku selama 2 Menit.");
+        message.setText(
+                "Klik link berikut untuk reset password Anda:\n" + resetUrl + "\n\nLink berlaku selama 2 Menit.");
 
         mailSender.send(message);
     }
+
+    // email ppdb
+    public void sendRegistrationEmail(String to, String noPendaftaran, String nama) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject("Bukti Registrasi PPDB");
+        message.setText("Halo " + nama + ",\n\n"
+                + "Terima kasih sudah mendaftar PPDB.\n"
+                + "Nomor pendaftaran Anda adalah: " + noPendaftaran + "\n\n"
+                + "Silakan datang ke sekolah dengan membawa berkas sesuai ketentuan.\n\n"
+                + "Salam,\nAdmin PPDB");
+        mailSender.send(message);
+    }
+
 }
