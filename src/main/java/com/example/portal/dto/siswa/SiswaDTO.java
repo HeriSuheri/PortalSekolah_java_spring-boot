@@ -1,6 +1,10 @@
 package com.example.portal.dto.siswa;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.example.portal.model.enums.StatusPembayaran;
+import com.example.portal.model.enums.StatusValidasi;
 
 public class SiswaDTO {
     private Long id;
@@ -15,6 +19,13 @@ public class SiswaDTO {
     private String classroomName;
     private String email; // dari tabel users
     private String fotoUrl; // dari tabel users
+
+    private String noPendaftaran;
+
+    // tambahan sinkron
+    private StatusValidasi status;
+    private StatusPembayaran statusPembayaran;
+    private BigDecimal jumlahBayar;
 
     public void setId(Long id) {
         this.id = id;
@@ -110,6 +121,38 @@ public class SiswaDTO {
 
     public String getFotoUrl() {
         return fotoUrl;
+    }
+
+    public StatusValidasi getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusValidasi status) {
+        this.status = status;
+    }
+
+    public StatusPembayaran getStatusPembayaran() {
+        return statusPembayaran;
+    }
+
+    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
+        this.statusPembayaran = statusPembayaran;
+    }
+
+    public void setJumlahBayar(BigDecimal jumlahBayar) {
+        this.jumlahBayar = jumlahBayar;
+    }
+
+    public BigDecimal getJumlahBayar() {
+        return jumlahBayar;
+    }
+
+    public String getNoPendaftaran() {
+        return noPendaftaran;
+    }
+
+    public void setNoPendaftaran(String noPendaftaran) {
+        this.noPendaftaran = noPendaftaran;
     }
 
 }

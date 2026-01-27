@@ -3,6 +3,9 @@ package com.example.portal.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import com.example.portal.model.enums.StatusPembayaran;
+import com.example.portal.model.enums.StatusValidasi;
+
 @Entity
 @Table(name = "siswa")
 public class Siswa {
@@ -42,13 +45,29 @@ public class Siswa {
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ppdb_registration_id")
+    private PpdbRegistration ppdbRegistration;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 50)
+    private StatusValidasi status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_pembayaran", length = 50)
+    private StatusPembayaran statusPembayaran;
+
+    @Column(name = "jumlah_dibayar", precision = 12, scale = 2)
+    private java.math.BigDecimal jumlahBayar;
+
     // Constructors
     public Siswa() {
     }
 
     public Siswa(String nama, String nis, LocalDate tanggalLahir,
             String alamat, String namaAyah, String namaIbu, String noHandphone,
-            Classroom classroom, User user) {
+            Classroom classroom, User user, PpdbRegistration ppdbRegistration,
+            StatusValidasi status, StatusPembayaran statusPembayaran, java.math.BigDecimal jumlahBayar) {
         this.nama = nama;
         this.nis = nis;
         this.tanggalLahir = tanggalLahir;
@@ -58,6 +77,10 @@ public class Siswa {
         this.noHandphone = noHandphone;
         this.classroom = classroom;
         this.user = user;
+        this.ppdbRegistration = ppdbRegistration;
+        this.status = status;
+        this.statusPembayaran = statusPembayaran;
+        this.jumlahBayar = jumlahBayar;
     }
 
     // Getters and Setters
@@ -140,4 +163,37 @@ public class Siswa {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public PpdbRegistration getPpdbRegistration() {
+        return ppdbRegistration;
+    }
+
+    public void setPpdbRegistration(PpdbRegistration ppdbRegistration) {
+        this.ppdbRegistration = ppdbRegistration;
+    }
+
+    public StatusPembayaran getStatusPembayaran() {
+        return statusPembayaran;
+    }
+
+    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
+        this.statusPembayaran = statusPembayaran;
+    }
+
+    public StatusValidasi getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusValidasi status) {
+        this.status = status;
+    }
+
+    public java.math.BigDecimal getJumlahBayar() {
+        return jumlahBayar;
+    }
+
+    public void setJumlahBayar(java.math.BigDecimal jumlahBayar) {
+        this.jumlahBayar = jumlahBayar;
+    }
+
 }

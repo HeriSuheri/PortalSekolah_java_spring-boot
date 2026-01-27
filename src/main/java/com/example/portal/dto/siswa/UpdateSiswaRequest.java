@@ -1,9 +1,14 @@
 package com.example.portal.dto.siswa;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.example.portal.model.enums.StatusPembayaran;
+import com.example.portal.model.enums.StatusValidasi;
 
 public class UpdateSiswaRequest {
     private String nama;
+    private Long id;
     private String nis;
     private LocalDate tanggalLahir;
     private String alamat;
@@ -13,7 +18,24 @@ public class UpdateSiswaRequest {
     private Long classroomId; // kalau mau pindah kelas
     private String email;
 
+    // tambahan sinkron
+    private StatusValidasi status;
+    private StatusPembayaran statusPembayaran;
+    private BigDecimal jumlahBayar; // nominal
+
+    // opsional untuk PPDB
+    private String noPendaftaran;
+
     // getters & setters
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getNama() {
         return nama;
     }
@@ -84,6 +106,38 @@ public class UpdateSiswaRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setJumlahBayar(BigDecimal jumlahBayar) {
+        this.jumlahBayar = jumlahBayar;
+    }
+
+    public BigDecimal getJumlahBayar() {
+        return jumlahBayar;
+    }
+
+    public void setNoPendaftaran(String noPendaftaran) {
+        this.noPendaftaran = noPendaftaran;
+    }
+
+    public String getNoPendaftaran() {
+        return noPendaftaran;
+    }
+
+    public void setStatus(StatusValidasi status) {
+        this.status = status;
+    }
+
+    public StatusValidasi getStatus() {
+        return status;
+    }
+
+    public StatusPembayaran getStatusPembayaran() {
+        return statusPembayaran;
+    }
+
+    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
+        this.statusPembayaran = statusPembayaran;
     }
 
 }

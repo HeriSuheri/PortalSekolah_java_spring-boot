@@ -2,6 +2,7 @@ package com.example.portal.controller.classroom;
 
 import com.example.portal.dto.classroom.ClassroomDTO;
 import com.example.portal.dto.classroom.ClassroomDetailDTO;
+import com.example.portal.dto.classroom.ClassroomDetailSiswaKelasDTO;
 import com.example.portal.dto.classroom.CreateClassroomRequest;
 import com.example.portal.dto.classroom.UpdateClassroomRequest;
 import com.example.portal.dto.siswa.SiswaDTO;
@@ -84,17 +85,15 @@ public class ClassroomController {
         return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari classroom", response));
     }
 
-    // get siswa by id classroom
-    // no paging
-    // @GetMapping("/{id}/detail")
-    // public ResponseEntity<ApiResponse> getClassroomDetail(@PathVariable Long id)
-    // {
-    // ClassroomDetailDTO dto = classroomService.getClassroomDetail(id);
-    // return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil detail kelas",
-    // dto));
-    // }
+    // get siswa by id classroom no paging
+    @GetMapping("/{id}/kelasDetail")
+    public ResponseEntity<ApiResponse> getClassroomDetailSiswaKelas(@PathVariable Long id) {
+        ClassroomDetailSiswaKelasDTO dto = classroomService.getClassroomDetailSiswaKelas(id);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil detail kelas",
+                dto));
+    }
 
-    // with paging
+    // get siswa by id classroom with paging
     // DETAIL tanpa search
     @GetMapping("/{id}/detail")
     public ResponseEntity<ApiResponse> getClassroomDetail(

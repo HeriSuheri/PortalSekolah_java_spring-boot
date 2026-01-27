@@ -4,6 +4,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.portal.model.PpdbRegistration;
+import com.example.portal.model.Siswa;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
@@ -36,6 +39,85 @@ public class EmailServiceImpl implements EmailService {
                 + "Nomor pendaftaran Anda adalah: " + noPendaftaran + "\n\n"
                 + "Silakan datang ke sekolah dengan membawa berkas sesuai ketentuan.\n\n"
                 + "Salam,\nAdmin PPDB");
+        mailSender.send(message);
+    }
+
+    // notif berhasil diterima
+    public void sendAcceptanceEmail(Siswa siswa) {
+        String to = siswa.getUser().getEmail();
+        String subject = "Penerimaan Siswa Baru - " + siswa.getNama();
+        String body = """
+                Halo %s,
+
+                Selamat! Pendaftaran Anda telah diterima.
+
+                Detail siswa:
+                - Nama: %s
+                - NIS: %s
+                - Kelas: %s
+                - Status: %s
+                - Status Pembayaran: %s
+                - Jumlah Dibayar: %s
+
+                Silakan login ke portal sekolah untuk informasi lebih lanjut.
+
+                Salam,
+                Admin Sekolah
+                """.formatted(
+                siswa.getNama(),
+                siswa.getNama(),
+                siswa.getNis(),
+                siswa.getClassroom() != null ? siswa.getClassroom().getName() : "-",
+                siswa.getStatus(),
+                siswa.getStatusPembayaran(),
+                siswa.getJumlahBayar());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
+    }
+
+    public void sendAcceptanceEmailPpdb(PpdbRegistration siswa) {
+        String to = siswa.getEmail();
+        String subject = "Penerimaan Siswa Baru - " + siswa.getNama();
+        String body = """
+                Halo %s,
+
+                Selamat! Pendaftaran Anda telah diterima.
+
+                Detail siswa:
+                - Nama: %s
+                - No Pendaftaran: %s
+                - Alamat: %s
+                - Tanggal Lahir: %s
+                - No HP: %s
+                - Status: %s
+                - Status Pembayaran: %s
+                - Jumlah Dibayar: %s
+
+                Tunggu Informasi selanjutnya untuk pembagian kelas.
+
+                Salam,
+                Admin Sekolah
+                """.formatted(
+                siswa.getNama(),
+                siswa.getNama(),
+                siswa.getNoPendaftaran(),
+                siswa.getAlamat(),
+                siswa.getTanggalLahir(),
+                siswa.getNoHandphone(),
+                siswa.getStatus(),
+                siswa.getStatusPembayaran(),
+                siswa.getJumlahDibayar());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+
         mailSender.send(message);
     }
 

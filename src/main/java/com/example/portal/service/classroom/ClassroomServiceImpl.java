@@ -3,6 +3,7 @@ package com.example.portal.service.classroom;
 import org.springframework.stereotype.Service;
 import com.example.portal.dto.classroom.ClassroomDTO;
 import com.example.portal.dto.classroom.ClassroomDetailDTO;
+import com.example.portal.dto.classroom.ClassroomDetailSiswaKelasDTO;
 import com.example.portal.dto.classroom.CreateClassroomRequest;
 import com.example.portal.dto.classroom.UpdateClassroomRequest;
 import com.example.portal.dto.siswa.SiswaDTO;
@@ -122,7 +123,12 @@ public class ClassroomServiceImpl implements ClassroomService {
         Page<Classroom> result = (keyword == null || keyword.isBlank())
                 ? classroomRepo.findAll(pageable)
                 : classroomRepo.findByNameContainingIgnoreCase(keyword.trim(), pageable);
-        return result.map(ClassroomMapper::toDTO);
+        // return result.map(ClassroomMapper::toDTO);
+        return result.map(c -> {
+            long jumlahSiswa = siswaRepo.countByClassroomId(c.getId());
+            return ClassroomMapper.toDTO(c, jumlahSiswa);
+        });
+
     }
 
     // @Override
@@ -138,6 +144,22 @@ public class ClassroomServiceImpl implements ClassroomService {
     // }
 
     // detail classromm: CRUD siswa, info siswa - wali kelas, dll
+    // detail siswa kelas no paging
+    @Override
+    public ClassroomDetailSiswaKelasDTO getClassroomDetailSiswaKelas(Long id) {
+        Classroom classroom = classroomRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Classroom tidak ditemukan"));
+
+        // Ambil semua siswa di kelas tanpa paging
+        List<SiswaDTO> siswaList = siswaRepo.findByClassroomId(id)
+                .stream()
+                .map(SiswaMapper::toDTO)
+                .toList();
+
+        return ClassroomMapper.toDetailNoPagingDTO(classroom, siswaList);
+    }
+
+    // detail siswa kelas dengan paging
     @Override
     public ClassroomDetailDTO getClassroomDetail(Long id, String keyword, int page, int size) {
         Classroom classroom = classroomRepo.findById(id)

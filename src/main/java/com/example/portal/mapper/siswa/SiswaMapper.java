@@ -2,6 +2,7 @@ package com.example.portal.mapper.siswa;
 
 import com.example.portal.dto.siswa.SiswaDTO;
 import com.example.portal.model.Siswa;
+import com.example.portal.model.PpdbRegistration;
 
 public class SiswaMapper {
 
@@ -19,14 +20,27 @@ public class SiswaMapper {
         dto.setNamaIbu(entity.getNamaIbu());
         dto.setNoHandphone(entity.getNoHandphone());
 
+        // classroom
         if (entity.getClassroom() != null) {
             dto.setClassroomId(entity.getClassroom().getId());
             dto.setClassroomName(entity.getClassroom().getName());
         }
 
+        // user
         if (entity.getUser() != null) {
             dto.setEmail(entity.getUser().getEmail());
             dto.setFotoUrl(entity.getUser().getFotoUrl());
+        }
+
+        // ✅ tambahan sinkron
+        dto.setStatus(entity.getStatus()); // kalau di Siswa masih String
+        dto.setStatusPembayaran(entity.getStatusPembayaran());
+        dto.setJumlahBayar(entity.getJumlahBayar());
+
+        // ✅ relasi ke PPDB Registration
+        if (entity.getPpdbRegistration() != null) {
+            PpdbRegistration reg = entity.getPpdbRegistration();
+            dto.setNoPendaftaran(reg.getNoPendaftaran());
         }
 
         return dto;

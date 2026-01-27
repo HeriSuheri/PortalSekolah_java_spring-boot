@@ -2,6 +2,7 @@ package com.example.portal.service.classroom;
 
 import com.example.portal.dto.classroom.ClassroomDTO;
 import com.example.portal.dto.classroom.ClassroomDetailDTO;
+import com.example.portal.dto.classroom.ClassroomDetailSiswaKelasDTO;
 import com.example.portal.dto.classroom.CreateClassroomRequest;
 import com.example.portal.dto.classroom.UpdateClassroomRequest;
 import com.example.portal.dto.siswa.SiswaDTO;
@@ -23,7 +24,8 @@ public interface ClassroomService {
 
     Page<ClassroomDTO> search(String keyword, int page, int size);
 
-    // ClassroomDetailDTO getClassroomDetail(Long id);
+    ClassroomDetailSiswaKelasDTO getClassroomDetailSiswaKelas(Long id);
+
     ClassroomDetailDTO getClassroomDetail(Long id, String keyword, int page, int size);
 
 }

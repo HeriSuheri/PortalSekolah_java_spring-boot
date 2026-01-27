@@ -1,15 +1,18 @@
 package com.example.portal.dto.classroom;
 
-public class ClassroomDTO {
+import java.util.List;
+
+import com.example.portal.dto.siswa.SiswaDTO;
+
+public class ClassroomDetailSiswaKelasDTO {
     private Long id;
     private String name;
     private Long gradeLevelId;
     private String gradeLevelName;
-
     private Long waliGuruId;
     private String waliGuruName;
     private String waliGuruNip;
-    private Long jumlahSiswa;
+    private List<SiswaDTO> siswa; // ✅ langsung list
 
     public void setId(Long id) {
         this.id = id;
@@ -67,12 +70,12 @@ public class ClassroomDTO {
         return waliGuruNip;
     }
 
-    public void setJumlahSiswa(Long jumlahSiswa) {
-        this.jumlahSiswa = jumlahSiswa;
+    public void setSiswa(List<SiswaDTO> siswa) {
+        this.siswa = siswa;
     }
 
-    public Long getJumlahSiswa() {
-        return jumlahSiswa;
+    public List<SiswaDTO> getSiswa() {
+        return siswa;
     }
 
 }

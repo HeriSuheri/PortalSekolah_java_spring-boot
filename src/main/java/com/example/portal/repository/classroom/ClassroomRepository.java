@@ -1,4 +1,5 @@
 package com.example.portal.repository.classroom;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.portal.model.Classroom;

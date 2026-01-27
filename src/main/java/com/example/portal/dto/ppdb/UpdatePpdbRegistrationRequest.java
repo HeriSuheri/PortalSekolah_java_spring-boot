@@ -1,5 +1,6 @@
 package com.example.portal.dto.ppdb;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.example.portal.model.enums.StatusPembayaran;
@@ -12,10 +13,12 @@ public class UpdatePpdbRegistrationRequest {
     private String noHandphone;
     private String email;
 
+    private BigDecimal jumlahDibayar;
     private StatusValidasi status; // menunggu validasi, diterima, ditolak
     private StatusPembayaran statusPembayaran; // menunggu pembayaran, lunas, belum lunas
     private String catatanValidasi; // opsional, catatan admin
     private Long validatedByAdminId; // id admin yang memverifikasi
+    private Boolean isSendEmail;
 
     public StatusValidasi getStatus() {
         return status;
@@ -87,6 +90,22 @@ public class UpdatePpdbRegistrationRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setJumlahDibayar(BigDecimal jumlahDibayar) {
+        this.jumlahDibayar = jumlahDibayar;
+    }
+
+    public BigDecimal getJumlahDibayar() {
+        return jumlahDibayar;
+    }
+
+    public Boolean getIsSendEmail() {
+        return isSendEmail;
+    }
+
+    public void setIsSendEmail(Boolean isSendEmail) {
+        this.isSendEmail = isSendEmail;
     }
 
 }

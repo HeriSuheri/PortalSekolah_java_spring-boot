@@ -1,25 +1,36 @@
 package com.example.portal.controller.siswa;
 
 import com.example.portal.dto.admin.ApiResponse;
+import com.example.portal.dto.ppdb.PpdbRegistrationResponse;
 import com.example.portal.dto.siswa.CreateSiswaRequest;
 import com.example.portal.dto.siswa.UpdateSiswaRequest;
+import com.example.portal.repository.UserRepository;
 import com.example.portal.dto.siswa.SiswaDTO;
+import com.example.portal.service.ppdb.PpdbRegistrationService;
 import com.example.portal.service.siswa.SiswaService;
 import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/siswa")
 public class SiswaController {
 
     private final SiswaService siswaService;
+    private final PpdbRegistrationService ppdbRegistrationService;
+    private final UserRepository userRepo;
 
-    public SiswaController(SiswaService siswaService) {
+    public SiswaController(SiswaService siswaService, PpdbRegistrationService ppdbRegistrationService,
+            UserRepository userRepo) {
         this.siswaService = siswaService;
+        this.ppdbRegistrationService = ppdbRegistrationService;
+        this.userRepo = userRepo;
     }
 
     // CREATE siswa
@@ -77,5 +88,20 @@ public class SiswaController {
     public ResponseEntity<ApiResponse> getByClassroom(@PathVariable Long classroomId) {
         List<SiswaDTO> data = siswaService.getByClassroom(classroomId);
         return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil siswa per kelas", data));
+    }
+
+    @GetMapping("ppdb/{noPendaftaran}")
+    public ResponseEntity<ApiResponse> findByNoPendaftaran(@PathVariable String noPendaftaran) {
+        // Ambil data registrasi dari PPDB
+        PpdbRegistrationResponse reg = ppdbRegistrationService.findByNoPendaftaran(noPendaftaran);
+
+        // ✅ Validasi: cek apakah email siswa sudah ada di table users
+        if (userRepo.existsByEmail(reg.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new ApiResponse(false, "Siswa sudah terdaftar"));
+        }
+
+        // ✅ Kalau belum ada di Users, return data PPDB
+        return ResponseEntity.ok(new ApiResponse(true, "Data PPDB ditemukan", reg));
     }
 }

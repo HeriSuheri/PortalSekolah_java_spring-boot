@@ -7,14 +7,19 @@ import com.example.portal.model.PpdbRegistration;
 public class PpdbRegistrationMapper {
     public static PpdbRegistrationResponse toResponse(PpdbRegistration entity) {
         PpdbRegistrationResponse dto = new PpdbRegistrationResponse();
+        dto.setId(entity.getId());
         dto.setNoPendaftaran(entity.getNoPendaftaran());
         dto.setNama(entity.getNama());
+        dto.setAlamat(entity.getAlamat());
+        dto.setTanggalLahir(entity.getTanggalLahir());
+        dto.setNoHandphone(entity.getNoHandphone());
         dto.setEmail(entity.getEmail());
         dto.setStatus(entity.getStatus());
         dto.setStatusPembayaran(entity.getStatusPembayaran());
         dto.setJumlahDibayar(entity.getJumlahDibayar());
         dto.setValidatedAt(entity.getValidatedAt());
         dto.setCatatanValidasi(entity.getCatatanValidasi());
+        dto.setValidatedByAdminId(entity.getValidatedByAdminId());
         return dto;
     }
 
@@ -30,6 +35,9 @@ public class PpdbRegistrationMapper {
         if (request.getEmail() != null)
             entity.setEmail(request.getEmail());
 
+
+        if (request.getJumlahDibayar() != null)
+            entity.setJumlahDibayar(request.getJumlahDibayar());
         if (request.getStatus() != null)
             entity.setStatus(request.getStatus());
         if (request.getStatusPembayaran() != null)
