@@ -20,6 +20,10 @@ public class PpdbRegistrationMapper {
         dto.setValidatedAt(entity.getValidatedAt());
         dto.setCatatanValidasi(entity.getCatatanValidasi());
         dto.setValidatedByAdminId(entity.getValidatedByAdminId());
+        dto.setHasClassroom(entity.getHasClassroom());
+        dto.setJenisKelamin(entity.getJenisKelamin());
+        dto.setNamaAyah(entity.getNamaAyah());
+        dto.setNamaIbu(entity.getNamaIbu());
         return dto;
     }
 
@@ -46,6 +50,10 @@ public class PpdbRegistrationMapper {
             entity.setCatatanValidasi(request.getCatatanValidasi());
         if (request.getValidatedByAdminId() != null)
             entity.setValidatedByAdminId(request.getValidatedByAdminId());
+
+        entity.setJenisKelamin(request.getJenisKelamin());
+        entity.setNamaAyah(request.getNamaAyah());
+        entity.setNamaIbu(request.getNamaIbu());
     }
 
 }

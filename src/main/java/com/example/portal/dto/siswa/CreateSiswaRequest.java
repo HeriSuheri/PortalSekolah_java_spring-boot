@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -15,9 +16,6 @@ public class CreateSiswaRequest {
     @Size(max = 255)
     private String nama;
 
-    // @NotBlank
-    // private String nis;
-
     @NotNull
     private LocalDate tanggalLahir;
 
@@ -25,20 +23,15 @@ public class CreateSiswaRequest {
     private String namaAyah;
     private String namaIbu;
     private String noHandphone;
+    private JenisKelamin jenisKelamin;
 
     @NotNull
     private Long classroomId;
 
+    private Long ppdbRegistrationId;
+
     @NotBlank
     private String email; // untuk akun user
-
-    // opsional untuk PPDB
-    private String noPendaftaran;
-
-    // tambahan sinkron
-    private StatusValidasi status;
-    private StatusPembayaran statusPembayaran;
-    private BigDecimal jumlahBayar;
 
     public String getNama() {
         return nama;
@@ -47,14 +40,6 @@ public class CreateSiswaRequest {
     public void setNama(String nama) {
         this.nama = nama;
     }
-
-    // public String getNis() {
-    //     return nis;
-    // }
-
-    // public void setNis(String nis) {
-    //     this.nis = nis;
-    // }
 
     public LocalDate getTanggalLahir() {
         return tanggalLahir;
@@ -112,36 +97,20 @@ public class CreateSiswaRequest {
         this.email = email;
     }
 
-    public void setNoPendaftaran(String noPendaftaran) {
-        this.noPendaftaran = noPendaftaran;
+    public Long getPpdbRegistrationId() {
+        return ppdbRegistrationId;
     }
 
-    public String getNoPendaftaran() {
-        return noPendaftaran;
+    public void setPpdbRegistrationId(Long ppdbRegistrationId) {
+        this.ppdbRegistrationId = ppdbRegistrationId;
     }
 
-    public StatusValidasi getStatus() {
-        return status;
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
     }
 
-    public void setStatus(StatusValidasi status) {
-        this.status = status;
-    }
-
-    public StatusPembayaran getStatusPembayaran() {
-        return statusPembayaran;
-    }
-
-    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
-        this.statusPembayaran = statusPembayaran;
-    }
-
-    public void setJumlahBayar(BigDecimal jumlahBayar) {
-        this.jumlahBayar = jumlahBayar;
-    }
-
-    public BigDecimal getJumlahBayar() {
-        return jumlahBayar;
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
     }
 
 }

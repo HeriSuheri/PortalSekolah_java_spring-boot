@@ -29,6 +29,9 @@ public class Classroom {
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Siswa> siswaList = new ArrayList<>();
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
     // Constructors
     public Classroom() {
     }
@@ -78,4 +81,13 @@ public class Classroom {
     public void setSiswaList(List<Siswa> siswaList) {
         this.siswaList = siswaList;
     }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

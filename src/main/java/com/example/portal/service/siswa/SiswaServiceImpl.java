@@ -117,61 +117,28 @@ public class SiswaServiceImpl implements SiswaService {
         siswa.setNamaAyah(request.getNamaAyah());
         siswa.setNamaIbu(request.getNamaIbu());
         siswa.setNoHandphone(request.getNoHandphone());
+        siswa.setJenisKelamin(request.getJenisKelamin());
         siswa.setClassroom(classroom);
         siswa.setUser(user);
 
-        // ✅ Tambahan: relasi ke PPDB Registration kalau ada noPendaftaran
-        if (request.getNoPendaftaran() != null) {
-            PpdbRegistration reg = ppdbRegistrationRepo.findByNoPendaftaran(request.getNoPendaftaran())
+        // ✅ set relasi ke PPDB Registration
+        if (request.getPpdbRegistrationId() != null) {
+            PpdbRegistration ppdb = ppdbRegistrationRepo.findById(request.getPpdbRegistrationId())
                     .orElseThrow(() -> new IllegalArgumentException("PPDB Registration tidak ditemukan"));
-
-            siswa.setPpdbRegistration(reg);
-
-            // ✅ ambil dari request kalau ada, kalau tidak fallback ke PPDB
-            siswa.setStatus(request.getStatus() != null ? request.getStatus() : reg.getStatus());
-            siswa.setStatusPembayaran(
-                    request.getStatusPembayaran() != null ? request.getStatusPembayaran() : reg.getStatusPembayaran());
-            siswa.setJumlahBayar(
-                    request.getJumlahBayar() != null ? request.getJumlahBayar() : reg.getJumlahDibayar());
-
-            // kalau admin override, update PPDB juga biar sinkron
-            reg.setStatus(siswa.getStatus());
-            reg.setStatusPembayaran(siswa.getStatusPembayaran());
-            reg.setJumlahDibayar(siswa.getJumlahBayar());
-            reg.setValidatedAt(LocalDateTime.now());
-            reg.setValidatedByAdminId(1L); // ambil dari context admin login
-            ppdbRegistrationRepo.save(reg);
-
-        } else {
-            // default untuk siswa offline/pindahan
-            if (request.getStatus() != null) {
-                siswa.setStatus(request.getStatus());
-            } else {
-                siswa.setStatus(StatusValidasi.MENUNGGU_VALIDASI);
-            }
-
-            if (request.getStatusPembayaran() != null) {
-                siswa.setStatusPembayaran(request.getStatusPembayaran());
-            } else {
-                siswa.setStatusPembayaran(StatusPembayaran.MENUNGGU_PEMBAYARAN);
-            }
-
-            if (request.getJumlahBayar() != null) {
-                siswa.setJumlahBayar(request.getJumlahBayar());
-            } else {
-                siswa.setJumlahBayar(BigDecimal.ZERO);
-            }
-
+            siswa.setPpdbRegistration(ppdb);
+            ppdb.setHasClassroom(true);
+            ppdbRegistrationRepo.save(ppdb);
         }
 
         // siswaRepo.save(siswa);
 
-        Siswa saved = siswaRepo.save(siswa);
-
         // ✅ kirim email hanya saat create & status DITERIMA
-        if (saved.getStatus() == StatusValidasi.DITERIMA) {
-            emailService.sendAcceptanceEmail(saved);
-        }
+        // if (saved.getStatus() == StatusValidasi.DITERIMA) {
+        // emailService.sendAcceptanceEmail(saved);
+        // }
+        String className = siswa.getClassroom().getName();
+        Siswa saved = siswaRepo.save(siswa);
+        emailService.sendAddToClassroom(saved, className);
 
         return SiswaMapper.toDTO(siswa);
     }
@@ -188,12 +155,19 @@ public class SiswaServiceImpl implements SiswaService {
         siswa.setNamaAyah(request.getNamaAyah());
         siswa.setNamaIbu(request.getNamaIbu());
         siswa.setNoHandphone(request.getNoHandphone());
+        siswa.setJenisKelamin(request.getJenisKelamin());
 
         // classroom
         if (request.getClassroomId() != null) {
             Classroom classroom = classroomRepo.findById(request.getClassroomId())
                     .orElseThrow(() -> new RuntimeException("Classroom tidak ditemukan"));
             siswa.setClassroom(classroom);
+        }
+
+        if (request.getPpdbRegistrationId() != null) {
+            PpdbRegistration ppdb = ppdbRegistrationRepo.findById(request.getPpdbRegistrationId())
+                    .orElseThrow(() -> new RuntimeException("PPDB Registration tidak ditemukan"));
+            siswa.setPpdbRegistration(ppdb);
         }
 
         // validasi & update NIS
@@ -220,32 +194,6 @@ public class SiswaServiceImpl implements SiswaService {
         user.setNama(request.getNama());
         user.setTanggalLahir(request.getTanggalLahir());
 
-        // ✅ update kolom sinkron di siswa (pakai fallback)
-        if (request.getStatus() != null) {
-            siswa.setStatus(request.getStatus());
-        }
-        if (request.getStatusPembayaran() != null) {
-            siswa.setStatusPembayaran(request.getStatusPembayaran());
-        }
-        if (request.getJumlahBayar() != null) {
-            siswa.setJumlahBayar(request.getJumlahBayar());
-        }
-
-        // ✅ update PPDB Registration kalau siswa punya relasi
-        if (siswa.getPpdbRegistration() != null) {
-            PpdbRegistration reg = siswa.getPpdbRegistration();
-
-            reg.setStatus(request.getStatus() != null ? request.getStatus() : reg.getStatus());
-            reg.setStatusPembayaran(
-                    request.getStatusPembayaran() != null ? request.getStatusPembayaran() : reg.getStatusPembayaran());
-            reg.setJumlahDibayar(request.getJumlahBayar() != null ? request.getJumlahBayar() : reg.getJumlahDibayar());
-
-            reg.setValidatedAt(LocalDateTime.now());
-            reg.setValidatedByAdminId(1L); // TODO: ambil dari context admin login
-
-            ppdbRegistrationRepo.save(reg);
-        }
-
         return SiswaMapper.toDTO(siswaRepo.save(siswa));
     }
 
@@ -254,9 +202,9 @@ public class SiswaServiceImpl implements SiswaService {
         Siswa siswa = siswaRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
 
-        if (siswa.getPpdbRegistration() != null) {
-            ppdbRegistrationRepo.delete(siswa.getPpdbRegistration());
-        }
+        // if (siswa.getPpdbRegistration() != null) {
+        // ppdbRegistrationRepo.delete(siswa.getPpdbRegistration());
+        // }
 
         siswaRepo.delete(siswa);
     }

@@ -26,6 +26,9 @@ public class Guru {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
+
     // Constructors
     public Guru() {
     }
@@ -77,4 +80,13 @@ public class Guru {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

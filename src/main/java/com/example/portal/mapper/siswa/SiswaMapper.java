@@ -19,6 +19,7 @@ public class SiswaMapper {
         dto.setNamaAyah(entity.getNamaAyah());
         dto.setNamaIbu(entity.getNamaIbu());
         dto.setNoHandphone(entity.getNoHandphone());
+        dto.setJenisKelamin(entity.getJenisKelamin());
 
         // classroom
         if (entity.getClassroom() != null) {
@@ -33,14 +34,15 @@ public class SiswaMapper {
         }
 
         // ✅ tambahan sinkron
-        dto.setStatus(entity.getStatus()); // kalau di Siswa masih String
-        dto.setStatusPembayaran(entity.getStatusPembayaran());
-        dto.setJumlahBayar(entity.getJumlahBayar());
+        // dto.setStatus(entity.getStatus()); // kalau di Siswa masih String
+        // dto.setStatusPembayaran(entity.getStatusPembayaran());
+        // dto.setJumlahBayar(entity.getJumlahBayar());
 
-        // ✅ relasi ke PPDB Registration
+        // relasi ke PPDB Registration
         if (entity.getPpdbRegistration() != null) {
             PpdbRegistration reg = entity.getPpdbRegistration();
-            dto.setNoPendaftaran(reg.getNoPendaftaran());
+            dto.setPpdbRegistrationId(reg.getId()); // ✅ balikin ID
+            // dto.setNoPendaftaran(reg.getNoPendaftaran()); // balikin nomor pendaftaran
         }
 
         return dto;

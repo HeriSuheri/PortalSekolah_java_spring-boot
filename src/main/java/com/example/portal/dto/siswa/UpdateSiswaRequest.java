@@ -3,6 +3,7 @@ package com.example.portal.dto.siswa;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -15,16 +16,10 @@ public class UpdateSiswaRequest {
     private String namaAyah;
     private String namaIbu;
     private String noHandphone;
-    private Long classroomId; // kalau mau pindah kelas
+    private JenisKelamin jenisKelamin;
+    private Long classroomId;
     private String email;
-
-    // tambahan sinkron
-    private StatusValidasi status;
-    private StatusPembayaran statusPembayaran;
-    private BigDecimal jumlahBayar; // nominal
-
-    // opsional untuk PPDB
-    private String noPendaftaran;
+    private Long ppdbRegistrationId;
 
     // getters & setters
 
@@ -108,36 +103,20 @@ public class UpdateSiswaRequest {
         return email;
     }
 
-    public void setJumlahBayar(BigDecimal jumlahBayar) {
-        this.jumlahBayar = jumlahBayar;
+    public Long getPpdbRegistrationId() {
+        return ppdbRegistrationId;
     }
 
-    public BigDecimal getJumlahBayar() {
-        return jumlahBayar;
+    public void setPpdbRegistrationId(Long ppdbRegistrationId) {
+        this.ppdbRegistrationId = ppdbRegistrationId;
     }
 
-    public void setNoPendaftaran(String noPendaftaran) {
-        this.noPendaftaran = noPendaftaran;
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
     }
 
-    public String getNoPendaftaran() {
-        return noPendaftaran;
-    }
-
-    public void setStatus(StatusValidasi status) {
-        this.status = status;
-    }
-
-    public StatusValidasi getStatus() {
-        return status;
-    }
-
-    public StatusPembayaran getStatusPembayaran() {
-        return statusPembayaran;
-    }
-
-    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
-        this.statusPembayaran = statusPembayaran;
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
     }
 
 }

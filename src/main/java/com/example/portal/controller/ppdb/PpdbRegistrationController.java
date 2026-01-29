@@ -11,6 +11,7 @@ import com.example.portal.dto.admin.ApiResponse;
 import com.example.portal.dto.ppdb.CreatePpdbRegistrationRequest;
 import com.example.portal.dto.ppdb.PpdbRegistrationResponse;
 import com.example.portal.dto.ppdb.UpdatePpdbRegistrationRequest;
+import com.example.portal.dto.siswa.SiswaDTO;
 import com.example.portal.repository.ppdb.PpdbRegistrationRepository;
 
 @RestController
@@ -55,33 +56,30 @@ public class PpdbRegistrationController {
     // return ResponseEntity.ok(service.findByNoPendaftaran(noPendaftaran));
     // }
     // }
-
-    // GET ppdb dengan paging
-    @GetMapping
-    public ResponseEntity<ApiResponse> getPpdbPage(@RequestParam int page,
-            @RequestParam int size) {
-        Map<String, Object> data = service.getPpdbPage(page, size);
-        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil data calon siswa", data));
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAll(@RequestParam int tahun) {
+        List<PpdbRegistrationResponse> data = service.getAllByYear(tahun);
+        return ResponseEntity.ok(new ApiResponse(true,
+                "Berhasil ambil semua siswa PPDB tahun " + tahun, data));
     }
 
-    // SEARCH siswa dengan keyword + paging
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse> search(@RequestParam String keyword,
+    // GET ppdb dengan paging + filter tahun
+    @GetMapping
+    public ResponseEntity<ApiResponse> getPpdbPage(@RequestParam int tahun,
             @RequestParam int page,
             @RequestParam int size) {
-        Map<String, Object> data = service.search(keyword, page, size);
-        return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari calon siswa",
-                data));
-        // List<?> items = (List<?>) data.get("items");
+        Map<String, Object> data = service.getPpdbPage(tahun, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil data calon siswa tahun " + tahun, data));
+    }
 
-        // if (items == null || items.isEmpty()) {
-        // return ResponseEntity.ok(new ApiResponse(false, "Data tidak ditemukan",
-        // data));
-        // } else {
-        // return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari calon siswa",
-        // data));
-        // }
-
+    // SEARCH siswa dengan keyword + paging + filter tahun
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> search(@RequestParam String keyword,
+            @RequestParam int tahun,
+            @RequestParam int page,
+            @RequestParam int size) {
+        Map<String, Object> data = service.search(keyword, tahun, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari calon siswa tahun " + tahun, data));
     }
 
     // @PutMapping("/{id}/update-status")

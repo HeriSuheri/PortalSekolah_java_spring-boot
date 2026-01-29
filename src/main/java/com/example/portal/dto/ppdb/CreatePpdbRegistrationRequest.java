@@ -3,6 +3,7 @@ package com.example.portal.dto.ppdb;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -18,6 +19,9 @@ public class CreatePpdbRegistrationRequest {
     private StatusPembayaran statusPembayaran; // menunggu pembayaran, lunas, belum lunas
     private String catatanValidasi;
     private String noPendaftaran;
+    private JenisKelamin jenisKelamin;
+    private String namaAyah;
+    private String namaIbu;
 
     public String getNama() {
         return nama;
@@ -99,6 +103,28 @@ public class CreatePpdbRegistrationRequest {
         this.noPendaftaran = noPendaftaran;
     }
 
-    
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getNamaAyah() {
+        return namaAyah;
+    }
+
+    public void setNamaAyah(String namaAyah) {
+        this.namaAyah = namaAyah;
+    }
+
+    public String getNamaIbu() {
+        return namaIbu;
+    }
+
+    public void setNamaIbu(String namaIbu) {
+        this.namaIbu = namaIbu;
+    }
 
 }

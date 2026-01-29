@@ -13,6 +13,7 @@ public class ClassroomDetailSiswaKelasDTO {
     private String waliGuruName;
     private String waliGuruNip;
     private List<SiswaDTO> siswa; // ✅ langsung list
+    private Boolean isActive = true;
 
     public void setId(Long id) {
         this.id = id;
@@ -76,6 +77,14 @@ public class ClassroomDetailSiswaKelasDTO {
 
     public List<SiswaDTO> getSiswa() {
         return siswa;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

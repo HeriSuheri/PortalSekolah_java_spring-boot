@@ -82,6 +82,7 @@ public class ClassroomServiceImpl implements ClassroomService {
 
         entity.setName(name);
         entity.setGradeLevel(gradeLevel);
+        entity.setIsActive(request.getIsActive());
         // ✅ update wali guru kalau ada
         if (request.getWaliGuruId() != null) {
             Guru waliGuru = guruRepo.findById(request.getWaliGuruId())

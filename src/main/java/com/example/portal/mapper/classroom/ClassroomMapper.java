@@ -15,6 +15,7 @@ public class ClassroomMapper {
         ClassroomDTO dto = new ClassroomDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
+        dto.setIsActive(entity.getIsActive());
         dto.setGradeLevelId(entity.getGradeLevel().getId());
         dto.setGradeLevelName(entity.getGradeLevel().getName());
         if (entity.getWaliGuru() != null) {
@@ -56,6 +57,7 @@ public class ClassroomMapper {
         ClassroomDetailDTO dto = new ClassroomDetailDTO();
         dto.setId(classroom.getId());
         dto.setName(classroom.getName());
+        dto.setIsActive(classroom.getIsActive());
 
         if (classroom.getGradeLevel() != null) {
             dto.setGradeLevelId(classroom.getGradeLevel().getId());

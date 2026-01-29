@@ -8,7 +8,9 @@ public interface EmailService {
 
     void sendRegistrationEmail(String to, String noPendaftaran, String nama);
 
-    void sendAcceptanceEmail(Siswa siswa);
+    // void sendAcceptanceEmail(Siswa siswa);
 
     void sendAcceptanceEmailPpdb(PpdbRegistration ppdb);
+
+    void sendAddToClassroom(Siswa ppdb, String className);
 }

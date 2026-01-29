@@ -14,6 +14,8 @@ public class UpdateClassroomRequest {
 
     private Long waliGuruId;
 
+    private Boolean isActive = true;
+
     public void setName(String name) {
         this.name = name;
     }
@@ -36,6 +38,14 @@ public class UpdateClassroomRequest {
 
     public Long getWaliGuruId() {
         return waliGuruId;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

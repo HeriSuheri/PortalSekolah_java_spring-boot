@@ -3,6 +3,7 @@ package com.example.portal.dto.siswa;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -15,17 +16,14 @@ public class SiswaDTO {
     private String namaAyah;
     private String namaIbu;
     private String noHandphone;
+    private JenisKelamin jenisKelamin;
     private Long classroomId;
     private String classroomName;
     private String email; // dari tabel users
     private String fotoUrl; // dari tabel users
+    private Long ppdbRegistrationId;
 
-    private String noPendaftaran;
-
-    // tambahan sinkron
-    private StatusValidasi status;
-    private StatusPembayaran statusPembayaran;
-    private BigDecimal jumlahBayar;
+    // private String noPendaftaran;
 
     public void setId(Long id) {
         this.id = id;
@@ -123,36 +121,28 @@ public class SiswaDTO {
         return fotoUrl;
     }
 
-    public StatusValidasi getStatus() {
-        return status;
+    public Long getPpdbRegistrationId() {
+        return ppdbRegistrationId;
     }
 
-    public void setStatus(StatusValidasi status) {
-        this.status = status;
+    public void setPpdbRegistrationId(Long ppdbRegistrationId) {
+        this.ppdbRegistrationId = ppdbRegistrationId;
     }
 
-    public StatusPembayaran getStatusPembayaran() {
-        return statusPembayaran;
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
     }
 
-    public void setStatusPembayaran(StatusPembayaran statusPembayaran) {
-        this.statusPembayaran = statusPembayaran;
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
     }
 
-    public void setJumlahBayar(BigDecimal jumlahBayar) {
-        this.jumlahBayar = jumlahBayar;
-    }
+    // public String getNoPendaftaran() {
+    // return noPendaftaran;
+    // }
 
-    public BigDecimal getJumlahBayar() {
-        return jumlahBayar;
-    }
-
-    public String getNoPendaftaran() {
-        return noPendaftaran;
-    }
-
-    public void setNoPendaftaran(String noPendaftaran) {
-        this.noPendaftaran = noPendaftaran;
-    }
+    // public void setNoPendaftaran(String noPendaftaran) {
+    // this.noPendaftaran = noPendaftaran;
+    // }
 
 }

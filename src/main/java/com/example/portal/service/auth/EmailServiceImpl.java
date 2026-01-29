@@ -43,42 +43,39 @@ public class EmailServiceImpl implements EmailService {
     }
 
     // notif berhasil diterima
-    public void sendAcceptanceEmail(Siswa siswa) {
-        String to = siswa.getUser().getEmail();
-        String subject = "Penerimaan Siswa Baru - " + siswa.getNama();
-        String body = """
-                Halo %s,
+    // public void sendAcceptanceEmail(Siswa siswa) {
+    //     String to = siswa.getUser().getEmail();
+    //     String subject = "Penerimaan Siswa Baru - " + siswa.getNama();
+    //     String body = """
+    //             Halo %s,
 
-                Selamat! Pendaftaran Anda telah diterima.
+    //             Selamat! Pendaftaran Anda telah diterima.
 
-                Detail siswa:
-                - Nama: %s
-                - NIS: %s
-                - Kelas: %s
-                - Status: %s
-                - Status Pembayaran: %s
-                - Jumlah Dibayar: %s
+    //             Detail siswa:
+    //             - Nama: %s
+    //             - NIS: %s
+    //             - Kelas: %s
 
-                Silakan login ke portal sekolah untuk informasi lebih lanjut.
+    //             Silakan login ke portal sekolah untuk informasi lebih lanjut.
 
-                Salam,
-                Admin Sekolah
-                """.formatted(
-                siswa.getNama(),
-                siswa.getNama(),
-                siswa.getNis(),
-                siswa.getClassroom() != null ? siswa.getClassroom().getName() : "-",
-                siswa.getStatus(),
-                siswa.getStatusPembayaran(),
-                siswa.getJumlahBayar());
+    //             Salam,
+    //             Admin Sekolah
+    //             """.formatted(
+    //             siswa.getNama(),
+    //             siswa.getNama(),
+    //             siswa.getNis(),
+    //             siswa.getClassroom() != null ? siswa.getClassroom().getName() : "-",
+    //             siswa.getStatus(),
+    //             siswa.getStatusPembayaran(),
+    //             siswa.getJumlahBayar());
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
+    //     SimpleMailMessage message = new SimpleMailMessage();
+    //     message.setTo(to);
+    //     message.setSubject(subject);
+    //     message.setText(body);
 
-        mailSender.send(message);
-    }
+    //     mailSender.send(message);
+    // }
 
     public void sendAcceptanceEmailPpdb(PpdbRegistration siswa) {
         String to = siswa.getEmail();
@@ -112,6 +109,43 @@ public class EmailServiceImpl implements EmailService {
                 siswa.getStatus(),
                 siswa.getStatusPembayaran(),
                 siswa.getJumlahDibayar());
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+
+        mailSender.send(message);
+    }
+
+    public void sendAddToClassroom(Siswa siswa, String className) {
+        String to = siswa.getUser().getEmail();
+        String subject = "Penerimaan Siswa Baru - " + siswa.getNama();
+        String body = """
+                Halo %s,
+
+                Dengan ini kami sampaikan Informasi sebagai berikut:
+
+                Detail siswa:
+                - Nama: %s
+                - NIS: %s
+                - Kelas: %s
+                - Alamat: %s
+                - Tanggal Lahir: %s
+                - No Handphone: %s
+
+                Untuk tanggal mulai masuk sekolah akan kami informasikan selanjutnya.
+
+                Salam,
+                Admin Sekolah
+                """.formatted(
+                siswa.getNama(),
+                siswa.getNama(),
+                siswa.getNis(),
+                className,
+                siswa.getAlamat(),
+                siswa.getTanggalLahir(),
+                siswa.getNoHandphone());
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);

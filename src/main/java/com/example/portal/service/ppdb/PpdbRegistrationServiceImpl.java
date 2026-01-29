@@ -45,14 +45,18 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
     private String generateNoPendaftaran() {
         String tahun = String.valueOf(LocalDate.now().getYear());
 
-        // Ambil nomor terakhir di tahun ini
         String lastNo = repository.findLastNoPendaftaranByYear(LocalDate.now().getYear());
 
         int nextNumber = 1;
-        if (lastNo != null) {
-            // Format: PPDB-2026-001 → ambil bagian belakang
+        if (lastNo != null && !lastNo.isEmpty()) {
             String[] parts = lastNo.split("-");
-            nextNumber = Integer.parseInt(parts[2]) + 1;
+            if (parts.length == 3) {
+                try {
+                    nextNumber = Integer.parseInt(parts[2]) + 1;
+                } catch (NumberFormatException e) {
+                    nextNumber = 1; // fallback kalau format aneh
+                }
+            }
         }
 
         return String.format("PPDB-%s-%03d", tahun, nextNumber);
@@ -127,6 +131,10 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
         entity.setAlamat(request.getAlamat());
         entity.setNoHandphone(request.getNoHandphone());
         entity.setEmail(request.getEmail());
+        entity.setJenisKelamin(request.getJenisKelamin());
+        entity.setNamaAyah(request.getNamaAyah());
+        entity.setNamaIbu(request.getNamaIbu());
+        entity.setTahunPpdb(LocalDate.now().getYear());
 
         // entity.setStatus(StatusValidasi.MENUNGGU_VALIDASI);
         // entity.setStatusPembayaran(StatusPembayaran.MENUNGGU_PEMBAYARAN);
@@ -146,6 +154,12 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
                 request.getCatatanValidasi() != null ? request.getCatatanValidasi() : null);
         entity.setCreatedAt(LocalDateTime.now());
         entity.setUpdatedAt(LocalDateTime.now());
+        entity.setValidatedAt(LocalDateTime.now());
+
+        // ✅ ambil ID admin dari context login
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        entity.setValidatedByAdminId(userDetails.getId());
 
         // generate nomor pendaftaran otomatis
         // entity.setNoPendaftaran(generateNoPendaftaran());
@@ -167,8 +181,8 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
     }
 
     @Override
-    public Map<String, Object> getPpdbPage(int page, int size) {
-        Page<PpdbRegistration> ppdbPage = repository.findAll(PageRequest.of(page, size));
+    public Map<String, Object> getPpdbPage(int tahun, int page, int size) {
+        Page<PpdbRegistration> ppdbPage = repository.findByTahunPpdb(tahun, PageRequest.of(page, size));
         List<PpdbRegistrationResponse> ppdbList = ppdbPage.getContent().stream()
                 .map(PpdbRegistrationMapper::toResponse)
                 .collect(Collectors.toList());
@@ -182,17 +196,11 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
     }
 
     @Override
-    public Map<String, Object> search(String keyword, int page, int size) {
-        Page<PpdbRegistration> ppdbPage = repository.searchByKeyword(keyword, PageRequest.of(page, size));
+    public Map<String, Object> search(String keyword, int tahun, int page, int size) {
+        Page<PpdbRegistration> ppdbPage = repository.searchByKeywordAndYear(keyword, tahun, PageRequest.of(page, size));
         List<PpdbRegistrationResponse> ppdbList = ppdbPage.getContent().stream()
                 .map(PpdbRegistrationMapper::toResponse)
                 .collect(Collectors.toList());
-
-        // List<PpdbRegistrationResponse> ppdbList = ppdbPage.getContent().stream()
-        // .filter(reg -> reg.getStatus() == StatusValidasi.DITERIMA) // ✅ filter di
-        // sini
-        // .map(PpdbRegistrationMapper::toResponse)
-        // .collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("items", ppdbList);
@@ -256,5 +264,12 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
         PpdbRegistration entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Data tidak ditemukan"));
         repository.delete(entity);
+    }
+
+    @Override
+    public List<PpdbRegistrationResponse> getAllByYear(int tahun) {
+        return repository.findByTahunPpdb(tahun).stream()
+                .map(PpdbRegistrationMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

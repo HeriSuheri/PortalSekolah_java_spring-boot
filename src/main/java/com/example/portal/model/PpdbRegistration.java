@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -54,6 +55,22 @@ public class PpdbRegistration {
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Column(name = "has_classroom", nullable = false)
+    private Boolean hasClassroom = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jenis_kelamin", nullable = true)
+    private JenisKelamin jenisKelamin;
+
+    @Column(name = "nama_ayah")
+    private String namaAyah;
+
+    @Column(name = "nama_ibu")
+    private String namaIbu;
+
+    @Column(name = "tahun_ppdb", nullable = false)
+    private Integer tahunPpdb;
 
     // validasi admin
     private Long validatedByAdminId;
@@ -179,6 +196,46 @@ public class PpdbRegistration {
 
     public void setCatatanValidasi(String catatanValidasi) {
         this.catatanValidasi = catatanValidasi;
+    }
+
+    public Boolean getHasClassroom() {
+        return hasClassroom;
+    }
+
+    public void setHasClassroom(Boolean hasClassroom) {
+        this.hasClassroom = hasClassroom;
+    }
+
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getNamaAyah() {
+        return namaAyah;
+    }
+
+    public void setNamaAyah(String namaAyah) {
+        this.namaAyah = namaAyah;
+    }
+
+    public String getNamaIbu() {
+        return namaIbu;
+    }
+
+    public void setNamaIbu(String namaIbu) {
+        this.namaIbu = namaIbu;
+    }
+
+    public Integer getTahunPpdb() {
+        return tahunPpdb;
+    }
+
+    public void setTahunPpdb(Integer tahunPpdb) {
+        this.tahunPpdb = tahunPpdb;
     }
 
 }

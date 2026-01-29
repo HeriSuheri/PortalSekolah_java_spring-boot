@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.example.portal.model.enums.JenisKelamin;
 import com.example.portal.model.enums.StatusPembayaran;
 import com.example.portal.model.enums.StatusValidasi;
 
@@ -21,6 +22,10 @@ public class PpdbRegistrationResponse {
     private LocalDateTime validatedAt;
     private String catatanValidasi;
     private Long validatedByAdminId;
+    private Boolean hasClassroom;
+    private JenisKelamin jenisKelamin;
+    private String namaAyah;
+    private String namaIbu;
 
     public String getNoPendaftaran() {
         return noPendaftaran;
@@ -124,6 +129,38 @@ public class PpdbRegistrationResponse {
 
     public void setValidatedByAdminId(Long validatedByAdminId) {
         this.validatedByAdminId = validatedByAdminId;
+    }
+
+    public Boolean getHasClassroom() {
+        return hasClassroom;
+    }
+
+    public void setHasClassroom(Boolean hasClassroom) {
+        this.hasClassroom = hasClassroom;
+    }
+
+    public JenisKelamin getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(JenisKelamin jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getNamaAyah() {
+        return namaAyah;
+    }
+
+    public void setNamaAyah(String namaAyah) {
+        this.namaAyah = namaAyah;
+    }
+
+    public String getNamaIbu() {
+        return namaIbu;
+    }
+
+    public void setNamaIbu(String namaIbu) {
+        this.namaIbu = namaIbu;
     }
 
 }
