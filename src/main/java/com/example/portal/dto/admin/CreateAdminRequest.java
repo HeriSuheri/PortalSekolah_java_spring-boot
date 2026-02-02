@@ -22,5 +22,6 @@ public class CreateAdminRequest {
 
     @NotBlank(message = "Tanggal lahir wajib diisi")
     private String tanggalLahir; // Format: yyyy-MM-dd
-}
 
+    private Boolean isActive;
+}

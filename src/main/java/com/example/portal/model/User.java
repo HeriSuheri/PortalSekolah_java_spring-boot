@@ -48,6 +48,9 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "is_active", nullable = true)
+    private Boolean isActive = true;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

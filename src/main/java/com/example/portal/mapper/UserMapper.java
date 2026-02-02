@@ -31,6 +31,7 @@ public class UserMapper {
         dto.setTanggalLahir(user.getTanggalLahir());
         dto.setFotoUrl(user.getFotoUrl());
         dto.setEmail(user.getEmail());
+        dto.setIsActive(user.getIsActive());
         return dto;
     }
 
@@ -40,6 +41,7 @@ public class UserMapper {
         user.setNama(req.getNama());
         user.setEmail(req.getEmail());
         user.setTanggalLahir(LocalDate.parse(req.getTanggalLahir()));
+        user.setIsActive(req.getIsActive());
         user.setRole(Role.ADMIN);
         user.setPassword(null); // login awal pakai tanggal lahir
         return user;

@@ -9,6 +9,7 @@ public class GuruDTO {
     private LocalDate tanggalLahir;
     private String email;
     private String fotoUrl;
+    private Boolean isActive;
 
     public void setId(Long id) {
         this.id = id;
@@ -57,4 +58,13 @@ public class GuruDTO {
     public String getFotoUrl() {
         return fotoUrl;
     }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

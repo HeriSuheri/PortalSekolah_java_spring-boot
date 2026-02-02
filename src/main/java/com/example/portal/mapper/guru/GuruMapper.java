@@ -11,6 +11,7 @@ public class GuruMapper {
         dto.setNama(guru.getNama());
         dto.setTanggalLahir(guru.getTanggalLahir());
         dto.setEmail(guru.getUser().getEmail());
+        dto.setIsActive((guru.getIsActive()));
         dto.setFotoUrl(guru.getUser().getFotoUrl());
         return dto;
     }

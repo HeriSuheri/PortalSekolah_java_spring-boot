@@ -7,6 +7,7 @@ public class UpdateGuruRequest {
     private String nama;
     private LocalDate tanggalLahir;
     private String email;
+    private Boolean isActive;
 
     public void setNip(String nip) {
         this.nip = nip;
@@ -38,6 +39,14 @@ public class UpdateGuruRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

@@ -12,6 +12,7 @@ public class UserResponseDTO {
     private LocalDate tanggalLahir;
     private String fotoUrl;
     private String email;
+    private Boolean isActive;
 
     public LocalDate getTanggalLahir() {
         return tanggalLahir;
@@ -69,4 +70,13 @@ public class UserResponseDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

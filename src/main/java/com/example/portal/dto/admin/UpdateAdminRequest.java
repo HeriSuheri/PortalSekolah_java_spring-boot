@@ -14,4 +14,5 @@ public class UpdateAdminRequest {
     // private String tanggalLahir; // Format: yyyy-MM-dd
     @NotBlank(message = "Tanggal lahir wajib diisi")
     private String tanggalLahir;
+    private Boolean isActive;
 }

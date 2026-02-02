@@ -104,6 +104,7 @@ public class AdminServiceImpl implements AdminService {
         user.setNomorInduk(request.getNomorInduk());
         user.setNama(request.getNama());
         user.setEmail(request.getEmail());
+        user.setIsActive(request.getIsActive());
 
         log.info("Tanggal lahir diterima: {}", request.getTanggalLahir());
 

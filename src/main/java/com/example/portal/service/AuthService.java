@@ -103,6 +103,13 @@ public class AuthService {
                                         System.out.println("Tanggal lahir user: " + user.getTanggalLahir());
                                         System.out.println("Password hash: " + user.getPassword());
 
+                                        // cek yang sudah ga aktif
+                                        if (Boolean.FALSE.equals(user.getIsActive())) {
+                                                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                                                .body(Map.of("error",
+                                                                                "Akun anda sudah tidak aktif"));
+                                        }
+
                                         String raw = request.getPassword().trim();
 
                                         if (user.getPassword() == null) {

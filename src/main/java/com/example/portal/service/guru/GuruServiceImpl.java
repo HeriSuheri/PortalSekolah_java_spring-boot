@@ -52,12 +52,14 @@ public class GuruServiceImpl implements GuruService {
         user.setRole(Role.GURU);
         user.setNama(request.getNama());
         user.setEmail(request.getEmail());
+        user.setIsActive(request.getIsActive());
         userRepository.save(user);
 
         Guru guru = new Guru();
         guru.setNip(request.getNip());
         guru.setNama(request.getNama());
         guru.setTanggalLahir(request.getTanggalLahir());
+        guru.setIsActive(request.getIsActive());
         guru.setUser(user);
         guruRepository.save(guru);
 
@@ -114,6 +116,9 @@ public class GuruServiceImpl implements GuruService {
                 guru.setTanggalLahir(request.getTanggalLahir());
                 guru.getUser().setTanggalLahir(request.getTanggalLahir()); // sync ke User
             }
+
+            guru.getUser().setIsActive(request.getIsActive());
+            guru.setIsActive(request.getIsActive());
         }
 
         // karena cascade ALL sudah ada, cukup save guru → user ikut tersimpan
