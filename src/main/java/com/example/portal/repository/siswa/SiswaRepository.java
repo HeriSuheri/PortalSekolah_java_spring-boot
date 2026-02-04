@@ -22,14 +22,31 @@ public interface SiswaRepository extends JpaRepository<Siswa, Long> {
                         "   OR LOWER(s.nis) LIKE LOWER(CONCAT('%', :keyword, '%'))")
         Page<Siswa> searchByKeyword(String keyword, Pageable pageable);
 
-        Page<Siswa> findByClassroomId(Long classroomId, Pageable pageable);
+        // Page<Siswa> findByClassroomId(Long classroomId, Pageable pageable);
 
-        @Query("SELECT s FROM Siswa s " +
-                        "WHERE s.classroom.id = :classroomId " +
-                        "AND LOWER(s.nama) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-        Page<Siswa> searchByClassroomAndNama(Long classroomId, String keyword, Pageable pageable);
+        // @Query("SELECT s FROM Siswa s " +
+        // "WHERE s.classroom.id = :classroomId " +
+        // "AND LOWER(s.nama) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+        // Page<Siswa> searchByClassroomAndNama(Long classroomId, String keyword,
+        // Pageable pageable);
+        Page<Siswa> findByClassroomIdAndStatusSiswa(Long classroomId, String statusSiswa, Pageable pageable);
 
-        long countByClassroomId(Long classroomId);
+        Page<Siswa> findByClassroomIdAndNamaContainingIgnoreCaseAndStatusSiswa(
+                        Long classroomId, String nama, String statusSiswa, Pageable pageable);
+
+        List<Siswa> findByStatusSiswa(String statusSiswa);
+
+        // Page<Siswa> findByClassroomIdAndStatusSiswa(Long classroomId, String
+        // statusSiswa, Pageable pageable);
+
+        // long countByClassroomId(Long classroomId);
+        long countByClassroomIdAndStatusSiswa(Long classroomId, String statusSiswa);
+
+        // MENU ARSIP
+        Page<Siswa> findByStatusSiswaAndTahunBerhenti(String statusSiswa, Integer tahunBerhenti, Pageable pageable);
+
+        Page<Siswa> findByStatusSiswaAndNamaContainingIgnoreCaseAndTahunBerhenti(
+                        String statusSiswa, String nama, Integer tahunBerhenti, Pageable pageable);
 
         // untuk create NIS
         @Query("SELECT MAX(s.nis) FROM Siswa s WHERE s.nis LIKE CONCAT(:tahun, '%')")

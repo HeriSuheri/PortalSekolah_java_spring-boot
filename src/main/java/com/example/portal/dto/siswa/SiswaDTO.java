@@ -21,6 +21,7 @@ public class SiswaDTO {
     private String classroomName;
     private String email; // dari tabel users
     private String fotoUrl; // dari tabel users
+    private String statusSiswa;
     private Long ppdbRegistrationId;
 
     // private String noPendaftaran;
@@ -137,12 +138,12 @@ public class SiswaDTO {
         this.jenisKelamin = jenisKelamin;
     }
 
-    // public String getNoPendaftaran() {
-    // return noPendaftaran;
-    // }
+    public String getStatusSiswa() {
+        return statusSiswa;
+    }
 
-    // public void setNoPendaftaran(String noPendaftaran) {
-    // this.noPendaftaran = noPendaftaran;
-    // }
+    public void setStatusSiswa(String statusSiswa) {
+        this.statusSiswa = statusSiswa;
+    }
 
 }

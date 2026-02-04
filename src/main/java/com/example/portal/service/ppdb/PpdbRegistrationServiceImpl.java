@@ -96,6 +96,8 @@ public class PpdbRegistrationServiceImpl implements PpdbRegistrationService {
 
         // generate nomor pendaftaran otomatis
         entity.setNoPendaftaran(generateNoPendaftaran());
+        int tahun = LocalDate.now().getYear();
+        entity.setTahunPpdb(tahun);
 
         repository.save(entity);
         // kirim email bukti registrasi

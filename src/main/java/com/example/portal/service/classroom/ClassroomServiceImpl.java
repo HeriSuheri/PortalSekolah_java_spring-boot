@@ -126,7 +126,8 @@ public class ClassroomServiceImpl implements ClassroomService {
                 : classroomRepo.findByNameContainingIgnoreCase(keyword.trim(), pageable);
         // return result.map(ClassroomMapper::toDTO);
         return result.map(c -> {
-            long jumlahSiswa = siswaRepo.countByClassroomId(c.getId());
+            // long jumlahSiswa = siswaRepo.countByClassroomId(c.getId());
+            long jumlahSiswa = siswaRepo.countByClassroomIdAndStatusSiswa(c.getId(), "AKTIF");
             return ClassroomMapper.toDTO(c, jumlahSiswa);
         });
 
@@ -167,9 +168,15 @@ public class ClassroomServiceImpl implements ClassroomService {
                 .orElseThrow(() -> new RuntimeException("Classroom tidak ditemukan"));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("nama").ascending());
+        // Page<SiswaDTO> siswaPage = (keyword == null || keyword.isBlank())
+        // ? siswaRepo.findByClassroomId(id, pageable).map(SiswaMapper::toDTO)
+        // : siswaRepo.searchByClassroomAndNama(id, keyword.trim(),
+        // pageable).map(SiswaMapper::toDTO);
+
         Page<SiswaDTO> siswaPage = (keyword == null || keyword.isBlank())
-                ? siswaRepo.findByClassroomId(id, pageable).map(SiswaMapper::toDTO)
-                : siswaRepo.searchByClassroomAndNama(id, keyword.trim(), pageable).map(SiswaMapper::toDTO);
+                ? siswaRepo.findByClassroomIdAndStatusSiswa(id, "AKTIF", pageable).map(SiswaMapper::toDTO)
+                : siswaRepo.findByClassroomIdAndNamaContainingIgnoreCaseAndStatusSiswa(id, keyword.trim(), "AKTIF",
+                        pageable).map(SiswaMapper::toDTO);
 
         return ClassroomMapper.toDetailDTO(classroom, siswaPage);
     }

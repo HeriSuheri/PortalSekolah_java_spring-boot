@@ -54,16 +54,58 @@ public class Siswa {
     @JoinColumn(name = "ppdb_registration_id")
     private PpdbRegistration ppdbRegistration;
 
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "status", length = 50)
-    // private StatusValidasi status;
+    //
+    // Status siswa: AKTIF, BERHENTI, LULUS
+    @Column(name = "status_siswa", length = 20, nullable = false)
+    private String statusSiswa = "AKTIF";
 
-    // @Enumerated(EnumType.STRING)
-    // @Column(name = "status_pembayaran", length = 50)
-    // private StatusPembayaran statusPembayaran;
+    // Flag login aktif/tidak
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
-    // @Column(name = "jumlah_dibayar", precision = 12, scale = 2)
-    // private java.math.BigDecimal jumlahBayar;
+    // Flag arsip (khusus berhenti sementara)
+    @Column(name = "is_archived", nullable = false)
+    private Boolean isArchived = false;
+
+    // Catatan alasan berhenti
+    @Column(columnDefinition = "TEXT")
+    private String catatan;
+
+    // Audit trail
+    @Column(name = "archived_at")
+    private java.time.LocalDateTime archivedAt;
+
+    @Column(name = "restored_at")
+    private java.time.LocalDateTime restoredAt;
+
+    @Column(name = "graduated_at")
+    private java.time.LocalDateTime graduatedAt;
+
+    // Tahun angkatan (misalnya 2026)
+    @Column(name = "angkatan", nullable = true)
+    private Integer angkatan;
+
+    // Audit umum
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private java.time.LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private java.time.LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = java.time.LocalDateTime.now();
+        updatedAt = java.time.LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = java.time.LocalDateTime.now();
+    }
+
+    @Column(name = "tahun_berhenti")
+    private Integer tahunBerhenti;
+    //
 
     // Constructors
     public Siswa() {
@@ -180,6 +222,94 @@ public class Siswa {
 
     public void setJenisKelamin(JenisKelamin jenisKelamin) {
         this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getStatusSiswa() {
+        return statusSiswa;
+    }
+
+    public void setStatusSiswa(String statusSiswa) {
+        this.statusSiswa = statusSiswa;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Boolean getIsArchived() {
+        return isArchived;
+    }
+
+    public void setIsArchived(Boolean isArchived) {
+        this.isArchived = isArchived;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public java.time.LocalDateTime getArchivedAt() {
+        return archivedAt;
+    }
+
+    public void setArchivedAt(java.time.LocalDateTime archivedAt) {
+        this.archivedAt = archivedAt;
+    }
+
+    public java.time.LocalDateTime getRestoredAt() {
+        return restoredAt;
+    }
+
+    public void setRestoredAt(java.time.LocalDateTime restoredAt) {
+        this.restoredAt = restoredAt;
+    }
+
+    public java.time.LocalDateTime getGraduatedAt() {
+        return graduatedAt;
+    }
+
+    public void setGraduatedAt(java.time.LocalDateTime graduatedAt) {
+        this.graduatedAt = graduatedAt;
+    }
+
+    public Integer getAngkatan() {
+        return angkatan;
+    }
+
+    public void setAngkatan(Integer angkatan) {
+        this.angkatan = angkatan;
+    }
+
+    public java.time.LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.time.LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public java.time.LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(java.time.LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Integer getTahunBerhenti() {
+        return tahunBerhenti;
+    }
+
+    public void setTahunBerhenti(Integer tahunBerhenti) {
+        this.tahunBerhenti = tahunBerhenti;
     }
 
 }

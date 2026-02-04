@@ -4,6 +4,8 @@ import com.example.portal.dto.admin.ApiResponse;
 import com.example.portal.dto.ppdb.PpdbRegistrationResponse;
 import com.example.portal.dto.siswa.CreateSiswaRequest;
 import com.example.portal.dto.siswa.UpdateSiswaRequest;
+import com.example.portal.dto.siswa.berhenti.BerhentiDTO;
+import com.example.portal.dto.siswa.berhenti.BerhentiRequest;
 import com.example.portal.repository.UserRepository;
 import com.example.portal.dto.siswa.SiswaDTO;
 import com.example.portal.service.ppdb.PpdbRegistrationService;
@@ -104,4 +106,42 @@ public class SiswaController {
         // ✅ Kalau belum ada di Users, return data PPDB
         return ResponseEntity.ok(new ApiResponse(true, "Data PPDB ditemukan", reg));
     }
+
+    // ARSIP SISWA: BERHENTI
+    @PostMapping("/{id}/berhenti")
+    public ResponseEntity<ApiResponse> berhentiSiswa(
+            @PathVariable Long id,
+            @RequestBody BerhentiRequest request) {
+
+        siswaService.berhentiSiswa(id, request.getAlasan());
+        return ResponseEntity.ok(new ApiResponse(true, "Siswa berhasil diarsipkan", null));
+    }
+
+    // START: ARSIP SISWA BERHENTI
+    @GetMapping("/berhenti")
+    public ResponseEntity<ApiResponse> getSiswaBerhenti(
+            @RequestParam int tahunBerhenti,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> data = siswaService.getSiswaBerhentiPage(tahunBerhenti, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil data siswa berhenti", data));
+    }
+
+    @GetMapping("/berhenti/search")
+    public ResponseEntity<ApiResponse> searchSiswaBerhenti(
+            @RequestParam String keyword,
+            @RequestParam int tahunBerhenti,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> data = siswaService.searchBerhenti(keyword, tahunBerhenti, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari siswa berhenti", data));
+    }
+
+    @PutMapping("/berhenti/undo/{id}")
+    public ResponseEntity<ApiResponse> undoBerhenti(@PathVariable Long id) {
+        BerhentiDTO dto = siswaService.undoBerhenti(id);
+        return ResponseEntity.ok(new ApiResponse(true, "Siswa berhasil diaktifkan kembali", dto));
+    }
+    // END: ARSIP SISWA BERHENTI
+
 }

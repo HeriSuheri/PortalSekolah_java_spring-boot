@@ -3,6 +3,7 @@ package com.example.portal.service.siswa;
 import com.example.portal.dto.siswa.CreateSiswaRequest;
 import com.example.portal.dto.siswa.UpdateSiswaRequest;
 import com.example.portal.dto.siswa.SiswaDTO;
+import com.example.portal.dto.siswa.berhenti.BerhentiDTO;
 import com.example.portal.mapper.siswa.SiswaMapper;
 import com.example.portal.model.Siswa;
 import com.example.portal.repository.siswa.SiswaRepository;
@@ -121,6 +122,17 @@ public class SiswaServiceImpl implements SiswaService {
         siswa.setClassroom(classroom);
         siswa.setUser(user);
 
+        // ✅ status default
+        siswa.setStatusSiswa("AKTIF");
+        siswa.setIsActive(true);
+        siswa.setIsArchived(false);
+
+        // ✅ audit trail tambahan
+        siswa.setCatatan(null);
+        siswa.setArchivedAt(null);
+        siswa.setRestoredAt(null);
+        siswa.setGraduatedAt(null);
+
         // ✅ set relasi ke PPDB Registration
         if (request.getPpdbRegistrationId() != null) {
             PpdbRegistration ppdb = ppdbRegistrationRepo.findById(request.getPpdbRegistrationId())
@@ -216,9 +228,16 @@ public class SiswaServiceImpl implements SiswaService {
                 .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
     }
 
+    // @Override
+    // public List<SiswaDTO> getAll() {
+    // return siswaRepo.findAll().stream()
+    // .map(SiswaMapper::toDTO)
+    // .collect(Collectors.toList());
+    // }
+
     @Override
     public List<SiswaDTO> getAll() {
-        return siswaRepo.findAll().stream()
+        return siswaRepo.findByStatusSiswa("AKTIF").stream()
                 .map(SiswaMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -259,4 +278,85 @@ public class SiswaServiceImpl implements SiswaService {
                 .map(SiswaMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    // start: arsip siswa BERHENTI
+    @Override
+    @Transactional
+    public void berhentiSiswa(Long siswaId, String alasan) {
+        Siswa siswa = siswaRepo.findById(siswaId)
+                .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
+
+        siswa.setStatusSiswa("BERHENTI");
+        siswa.setIsActive(false);
+        siswa.setIsArchived(true);
+        siswa.setCatatan(alasan);
+        siswa.setRestoredAt(null);
+        siswa.setArchivedAt(LocalDateTime.now());
+        siswa.setTahunBerhenti(LocalDateTime.now().getYear());
+
+        // Update juga ke entity User
+        User user = siswa.getUser();
+        if (user != null) {
+            user.setIsActive(false);
+        }
+
+        siswaRepo.save(siswa);
+    }
+
+    @Override
+    public Map<String, Object> getSiswaBerhentiPage(int tahunBerhenti, int page, int size) {
+        Page<Siswa> siswaPage = siswaRepo.findByStatusSiswaAndTahunBerhenti(
+                "BERHENTI", tahunBerhenti, PageRequest.of(page, size));
+        List<BerhentiDTO> siswaList = siswaPage.getContent().stream()
+                .map(SiswaMapper::berhenti)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", siswaList);
+        response.put("currentPage", siswaPage.getNumber());
+        response.put("totalItems", siswaPage.getTotalElements());
+        response.put("totalPages", siswaPage.getTotalPages());
+        return response;
+    }
+
+    @Override
+    public Map<String, Object> searchBerhenti(String keyword, int tahunBerhenti, int page, int size) {
+        Page<Siswa> siswaPage = siswaRepo.findByStatusSiswaAndNamaContainingIgnoreCaseAndTahunBerhenti(
+                "BERHENTI", keyword.trim(), tahunBerhenti, PageRequest.of(page, size));
+        List<BerhentiDTO> siswaList = siswaPage.getContent().stream()
+                .map(SiswaMapper::berhenti)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", siswaList);
+        response.put("currentPage", siswaPage.getNumber());
+        response.put("totalItems", siswaPage.getTotalElements());
+        response.put("totalPages", siswaPage.getTotalPages());
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public BerhentiDTO undoBerhenti(Long siswaId) {
+        Siswa siswa = siswaRepo.findById(siswaId)
+                .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
+
+        // reset status
+        siswa.setStatusSiswa("AKTIF");
+        siswa.setIsActive(true);
+        siswa.setIsArchived(false);
+        siswa.setCatatan(null);
+        siswa.setTahunBerhenti(null);
+        siswa.setRestoredAt(LocalDateTime.now());
+        siswa.setArchivedAt(null);
+
+        User user = siswa.getUser();
+        if (user != null) {
+            user.setIsActive(true);
+        }
+
+        siswaRepo.save(siswa);
+        return SiswaMapper.berhenti(siswa);
+    }
+    // end: arsip siswa berhenti
 }
