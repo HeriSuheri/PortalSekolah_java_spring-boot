@@ -359,4 +359,87 @@ public class SiswaServiceImpl implements SiswaService {
         return SiswaMapper.berhenti(siswa);
     }
     // end: arsip siswa berhenti
+
+    // start: arsip siswa LULUS
+    @Override
+    @Transactional
+    public void lulusSiswa(Long siswaId, String alasan) {
+        Siswa siswa = siswaRepo.findById(siswaId)
+                .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
+
+        siswa.setStatusSiswa("LULUS");
+        siswa.setIsActive(false);
+        siswa.setIsArchived(true);
+        siswa.setCatatan(alasan);
+        siswa.setRestoredAt(null);
+        siswa.setArchivedAt(LocalDateTime.now());
+        siswa.setGraduatedAt(LocalDateTime.now());
+        siswa.setAngkatan(LocalDateTime.now().getYear());
+
+        // Update juga ke entity User
+        User user = siswa.getUser();
+        if (user != null) {
+            user.setIsActive(false);
+        }
+
+        siswaRepo.save(siswa);
+    }
+
+    @Override
+    public Map<String, Object> getSiswaLulusPage(int angkatan, int page, int size) {
+        Page<Siswa> siswaPage = siswaRepo.findByStatusSiswaAndAngkatan(
+                "LULUS", angkatan, PageRequest.of(page, size));
+        List<BerhentiDTO> siswaList = siswaPage.getContent().stream()
+                .map(SiswaMapper::berhenti)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", siswaList);
+        response.put("currentPage", siswaPage.getNumber());
+        response.put("totalItems", siswaPage.getTotalElements());
+        response.put("totalPages", siswaPage.getTotalPages());
+        return response;
+    }
+
+    @Override
+    public Map<String, Object> searchLulus(String keyword, int angkatan, int page, int size) {
+        Page<Siswa> siswaPage = siswaRepo.findByStatusSiswaAndNamaContainingIgnoreCaseAndAngkatan(
+                "LULUS", keyword.trim(), angkatan, PageRequest.of(page, size));
+        List<BerhentiDTO> siswaList = siswaPage.getContent().stream()
+                .map(SiswaMapper::berhenti)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", siswaList);
+        response.put("currentPage", siswaPage.getNumber());
+        response.put("totalItems", siswaPage.getTotalElements());
+        response.put("totalPages", siswaPage.getTotalPages());
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public BerhentiDTO undoLulus(Long siswaId) {
+        Siswa siswa = siswaRepo.findById(siswaId)
+                .orElseThrow(() -> new RuntimeException("Siswa tidak ditemukan"));
+
+        // reset status
+        siswa.setStatusSiswa("AKTIF");
+        siswa.setIsActive(true);
+        siswa.setIsArchived(false);
+        siswa.setCatatan(null);
+        siswa.setAngkatan(null);
+        siswa.setGraduatedAt(null);
+        siswa.setRestoredAt(LocalDateTime.now());
+        siswa.setArchivedAt(null);
+
+        User user = siswa.getUser();
+        if (user != null) {
+            user.setIsActive(true);
+        }
+
+        siswaRepo.save(siswa);
+        return SiswaMapper.berhenti(siswa);
+    }
+    // end: arsip siswa lulus
 }

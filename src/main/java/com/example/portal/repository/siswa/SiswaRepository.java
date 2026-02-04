@@ -42,11 +42,17 @@ public interface SiswaRepository extends JpaRepository<Siswa, Long> {
         // long countByClassroomId(Long classroomId);
         long countByClassroomIdAndStatusSiswa(Long classroomId, String statusSiswa);
 
-        // MENU ARSIP
+        // MENU ARSIP BERHENTI
         Page<Siswa> findByStatusSiswaAndTahunBerhenti(String statusSiswa, Integer tahunBerhenti, Pageable pageable);
 
         Page<Siswa> findByStatusSiswaAndNamaContainingIgnoreCaseAndTahunBerhenti(
                         String statusSiswa, String nama, Integer tahunBerhenti, Pageable pageable);
+
+        // MENU ARSIP LULUS
+        Page<Siswa> findByStatusSiswaAndAngkatan(String statusSiswa, Integer angkatan, Pageable pageable);
+
+        Page<Siswa> findByStatusSiswaAndNamaContainingIgnoreCaseAndAngkatan(
+                        String statusSiswa, String nama, Integer angkatan, Pageable pageable);
 
         // untuk create NIS
         @Query("SELECT MAX(s.nis) FROM Siswa s WHERE s.nis LIKE CONCAT(:tahun, '%')")

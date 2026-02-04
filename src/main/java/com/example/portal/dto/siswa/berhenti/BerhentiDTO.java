@@ -19,6 +19,7 @@ public class BerhentiDTO {
     private String archivedDateOnly;
     private String catatan;
     private String statusSiswa;
+    private String graduatedAt;
 
     public Long getId() {
         return id;
@@ -114,6 +115,14 @@ public class BerhentiDTO {
 
     public void setArchivedDateOnly(String archivedDateOnly) {
         this.archivedDateOnly = archivedDateOnly;
+    }
+
+    public String getGraduatedAt() {
+        return graduatedAt;
+    }
+
+    public void setGraduatedAt(String graduatedAt) {
+        this.graduatedAt = graduatedAt;
     }
 
 }

@@ -25,13 +25,23 @@ public interface SiswaService {
 
     List<SiswaDTO> getByClassroom(Long classroomId);
 
+    // start menu arsip (BERHENTI)
     void berhentiSiswa(Long siswaId, String alasan);
 
-    // khusus menu arsip (BERHENTI)
     Map<String, Object> getSiswaBerhentiPage(int tahunBerhenti, int page, int size);
 
     Map<String, Object> searchBerhenti(String keyword, int tahunBerhenti, int page, int size);
 
     BerhentiDTO undoBerhenti(Long siswaId);
+    // end menu arsip berhenti
 
+    // start menu arsip(LULUS)
+    void lulusSiswa(Long siswaId, String alasan);
+
+    Map<String, Object> searchLulus(String keyword, int angkatan, int page, int size);
+
+    Map<String, Object> getSiswaLulusPage(int angkatan, int page, int size);
+
+    BerhentiDTO undoLulus(Long siswaId);
+    // end menu arsip lulus
 }

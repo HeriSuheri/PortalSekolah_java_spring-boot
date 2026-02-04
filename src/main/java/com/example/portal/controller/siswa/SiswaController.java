@@ -107,17 +107,16 @@ public class SiswaController {
         return ResponseEntity.ok(new ApiResponse(true, "Data PPDB ditemukan", reg));
     }
 
-    // ARSIP SISWA: BERHENTI
+    // START: ARSIP SISWA BERHENTI
     @PostMapping("/{id}/berhenti")
     public ResponseEntity<ApiResponse> berhentiSiswa(
             @PathVariable Long id,
             @RequestBody BerhentiRequest request) {
 
         siswaService.berhentiSiswa(id, request.getAlasan());
-        return ResponseEntity.ok(new ApiResponse(true, "Siswa berhasil diarsipkan", null));
+        return ResponseEntity.ok(new ApiResponse(true, "Siswa berhenti berhasil diarsipkan", null));
     }
 
-    // START: ARSIP SISWA BERHENTI
     @GetMapping("/berhenti")
     public ResponseEntity<ApiResponse> getSiswaBerhenti(
             @RequestParam int tahunBerhenti,
@@ -143,5 +142,41 @@ public class SiswaController {
         return ResponseEntity.ok(new ApiResponse(true, "Siswa berhasil diaktifkan kembali", dto));
     }
     // END: ARSIP SISWA BERHENTI
+
+    // START: ARSIP SISWA LULUS
+    @PostMapping("/{id}/lulus")
+    public ResponseEntity<ApiResponse> lulusSiswa(
+            @PathVariable Long id,
+            @RequestBody BerhentiRequest request) {
+
+        siswaService.lulusSiswa(id, request.getAlasan());
+        return ResponseEntity.ok(new ApiResponse(true, "Siswa lulus berhasil diarsipkan", null));
+    }
+
+    @GetMapping("/lulus")
+    public ResponseEntity<ApiResponse> getSiswaLulus(
+            @RequestParam int angkatan,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> data = siswaService.getSiswaLulusPage(angkatan, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil data siswa lulus", data));
+    }
+
+    @GetMapping("/lulus/search")
+    public ResponseEntity<ApiResponse> searchSiswaLulus(
+            @RequestParam String keyword,
+            @RequestParam int angkatan,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> data = siswaService.searchLulus(keyword, angkatan, page, size);
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil cari kelulusan siswa", data));
+    }
+
+    @PutMapping("/lulus/undo/{id}")
+    public ResponseEntity<ApiResponse> undoLulus(@PathVariable Long id) {
+        BerhentiDTO dto = siswaService.undoLulus(id);
+        return ResponseEntity.ok(new ApiResponse(true, "Siswa berhasil diaktifkan kembali", dto));
+    }
+    // END: ARSIP SISWA LULUS
 
 }

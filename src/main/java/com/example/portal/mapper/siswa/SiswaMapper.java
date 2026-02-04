@@ -66,6 +66,10 @@ public class SiswaMapper {
                 entity.getArchivedAt() != null
                         ? entity.getArchivedAt().toLocalDate().toString()
                         : null);
+
+        dto.setGraduatedAt(entity.getGraduatedAt() != null
+                ? entity.getGraduatedAt().toLocalDate().toString()
+                : null);
         dto.setCatatan(entity.getCatatan());
         dto.setStatusSiswa(entity.getStatusSiswa());
 
