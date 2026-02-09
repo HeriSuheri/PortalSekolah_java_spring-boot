@@ -104,6 +104,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.DELETE, "/api/siswa/**").hasAnyRole("ADMIN", "GURU")
                         .requestMatchers(HttpMethod.GET, "/api/siswa/**").hasAnyRole("ADMIN", "GURU", "SISWA")
+                        .requestMatchers(HttpMethod.GET, "/api/general-param/**").permitAll() 
+                        .requestMatchers(HttpMethod.PUT, "/api/general-param/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
                 .formLogin(login -> login.disable());
