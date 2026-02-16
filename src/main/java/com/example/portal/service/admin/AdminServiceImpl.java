@@ -55,6 +55,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<UserResponseDTO> getAllAdmins() {
         return userRepository.findByRole(Role.ADMIN).stream()
+                .filter(user -> user.getIsActive())
                 .map(UserMapper::toDTO)
                 .toList();
     }

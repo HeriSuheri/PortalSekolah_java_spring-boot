@@ -8,6 +8,8 @@ import com.example.portal.mapper.guru.GuruMapper;
 import com.example.portal.model.*;
 import com.example.portal.repository.guru.GuruRepository;
 import com.example.portal.repository.UserRepository;
+import com.example.portal.repository.classroom.ClassroomRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +27,13 @@ public class GuruServiceImpl implements GuruService {
 
     private final GuruRepository guruRepository;
     private final UserRepository userRepository;
+    private final ClassroomRepository classroomRepository;
 
-    public GuruServiceImpl(GuruRepository guruRepository, UserRepository userRepository) {
+    public GuruServiceImpl(GuruRepository guruRepository, UserRepository userRepository,
+            ClassroomRepository classroomRepository) {
         this.guruRepository = guruRepository;
         this.userRepository = userRepository;
+        this.classroomRepository = classroomRepository;
     }
 
     @Override
@@ -79,6 +84,15 @@ public class GuruServiceImpl implements GuruService {
         // Guru tidak boleh edit
         if (currentUser.getRole() == Role.GURU) {
             throw new AccessDeniedException("Guru tidak boleh edit data");
+        }
+
+        // ✅ Validasi: kalau request ingin set isActive = false
+        if (request.getIsActive() != null && !request.getIsActive()) {
+            boolean masihWaliKelas = classroomRepository.existsByWaliGuru(guru);
+            if (masihWaliKelas) {
+                throw new IllegalStateException(
+                        "Guru masih menjadi wali kelas di salah satu kelas, tidak bisa di-nonaktifkan");
+            }
         }
 
         // Admin
@@ -145,6 +159,7 @@ public class GuruServiceImpl implements GuruService {
     public List<GuruDTO> getAllGuru() {
         return guruRepository.findAll()
                 .stream()
+                .filter(guru -> guru.getIsActive())
                 .map(GuruMapper::toDTO)
                 .toList();
     }
@@ -188,15 +203,15 @@ public class GuruServiceImpl implements GuruService {
     }
 
     // public List<GuruDTO> getAllGurus() {
-    //     return guruRepository.findAll()
-    //             .stream()
-    //             .map(guru -> {
-    //                 GuruDTO dto = new GuruDTO();
-    //                 dto.setId(guru.getId());
-    //                 dto.setNip(guru.getNip());
-    //                 dto.setNama(guru.getNama());
-    //                 return dto;
-    //             })
-    //             .toList();
+    // return guruRepository.findAll()
+    // .stream()
+    // .map(guru -> {
+    // GuruDTO dto = new GuruDTO();
+    // dto.setId(guru.getId());
+    // dto.setNip(guru.getNip());
+    // dto.setNama(guru.getNama());
+    // return dto;
+    // })
+    // .toList();
     // }
 }

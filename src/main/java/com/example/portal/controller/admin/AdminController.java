@@ -43,13 +43,14 @@ public class AdminController {
     }
 
     // tanpa pagination
-    // @GetMapping
-    // public ResponseEntity<?> getAllAdmins() {
-    // List<UserResponseDTO> admins = adminService.getAllAdmins();
-    // return ResponseEntity.ok(Map.of(
-    // "admins", admins,
-    // "count", admins.size()));
-    // }
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAllAdmins() {
+        List<UserResponseDTO> admins = adminService.getAllAdmins();
+        return ResponseEntity.ok(new ApiResponse(true, "Berhasil ambil semua admin", admins));
+        // return ResponseEntity.ok(Map.of(
+        // "admins", admins,
+        // "count", admins.size()));
+    }
 
     // dengan pagination tanpa mapper
     // @GetMapping
